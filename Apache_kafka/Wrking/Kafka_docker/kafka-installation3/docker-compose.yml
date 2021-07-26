@@ -1,4 +1,4 @@
-#To be fixed..
+#To be fixed..(kafka-servers crash, zk-servers run fine)
 #
 version: '3'
 services:

@@ -141,9 +141,9 @@ sh-4.4$kafka-topics --list --bootstrap-server localhost:19092
 
 sh-4.4$kafka-topics --create --topic Test1 --bootstrap-server localhost:19092 --partitions 3 --replication-factor 3
 
-sh-4.4$kafka-topics --list --bootstrap-server localhost:9092
+sh-4.4$kafka-topics --list --bootstrap-server localhost:19092
 
-sh-4.4$kafka-topics --describe --bootstrap-server localhost:9092
+sh-4.4$kafka-topics --describe --bootstrap-server localhost:19092
 
 
 
