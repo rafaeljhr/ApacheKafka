@@ -1,0 +1,93 @@
+###Building separate docker images of kafka and zookeeper> running 2 different containers>
+
+>kafka-installation7
+>kafka-installation7/zk-image
+>kafka-installation7/kafka-image
+
+
+###To start zookeeper in foreground
+root@m1:~# cd kafka-installation7/zk-image/
+root@m1:~/kafka-installation7/zk-image# docker run --volume=data:/opt/zookeeper-3.4.6/state/zookeeper -p 2181:2181 -p 2888:2888 -p 3888:3888 -p 8080:8080 -it --name zk-server zk-s1:3.4 /bin/sh 
+docker: Error response from daemon: Conflict. The container name "/zk-server" is already in use by container "763f3b9ca4bce0ac108d483f0a4b43ce55de84314c43e5fe8cb67c336c6b7316". You have to remove (or rename) that container to be able to reuse that name.
+See 'docker run --help'.
+root@m1:~/kafka-installation7/zk-image# docker rm /zk-server
+/zk-server
+root@m1:~/kafka-installation7/zk-image# docker run --volume=data:/opt/zookeeper-3.4.6/state/zookeeper -p 2181:2181 -p 2888:2888 -p 3888:3888 -p 8080:8080 -it --name zk-server zk-s1:3.4 /bin/sh 
+# 
+
+###To start kafka broker in foreground
+root@m1:~/kafka-installation7/kafka-image# docker rm kafka-server
+kafka-server
+root@m1:~/kafka-installation7/kafka-image# docker run -it --name kafka-server kafka-s2:2.11 /bin/sh
+
+
+###to check if containers are up and running
+root@m1:~# docker container ls
+CONTAINER ID   IMAGE           COMMAND     CREATED          STATUS          PORTS                                                                                            NAMES
+02866ef62a08   zk-s1:3.4       "/bin/sh"   24 seconds ago   Up 23 seconds   0.0.0.0:2181->2181/tcp, 0.0.0.0:2888->2888/tcp, 0.0.0.0:3888->3888/tcp, 0.0.0.0:8080->8080/tcp   zk-server
+f4fbbcdb0c81   kafka-s2:2.11   "/bin/sh"   3 minutes ago    Up 3 minutes                                                                                                     kafka-server
+
+
+###To check containers connected to same network
+
+Usage:  docker network inspect [OPTIONS] NETWORK [NETWORK...]
+
+Display detailed information on one or more networks
+root@m1:~# docker network inspect bridge
+[
+    {
+        "Name": "bridge",
+        "Id": "a9340edc0e72527a958807612c335d2815aa005c03e23ca2f03cd936555de69b",
+        "Created": "2021-07-26T20:58:12.078477969+02:00",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.17.0.0/16",
+                    "Gateway": "172.17.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {
+            "02866ef62a08a11afd9de1793fefa504e955ed84bf182f5c92175d8fe36832aa": {
+                "Name": "zk-server",
+                "EndpointID": "3f43830cdde873e5d6270fdbbc0745246c5108a7dea5dfa27c7152d468055036",
+                "MacAddress": "02:42:ac:11:00:03",
+                "IPv4Address": "172.17.0.3/16",
+                "IPv6Address": ""
+            },
+            "f4fbbcdb0c81c9bce3956e820372a7fce834b90fb7b230b84202f19bfd839213": {
+                "Name": "kafka-server",
+                "EndpointID": "38d501ebfded03ef3f8052cceda4f6adb6e511ecae4376e9cd7cbb72af3e8bbe",
+                "MacAddress": "02:42:ac:11:00:02",
+                "IPv4Address": "172.17.0.2/16",
+                "IPv6Address": ""
+            }
+        },
+        "Options": {
+            "com.docker.network.bridge.default_bridge": "true",
+            "com.docker.network.bridge.enable_icc": "true",
+            "com.docker.network.bridge.enable_ip_masquerade": "true",
+            "com.docker.network.bridge.host_binding_ipv4": "0.0.0.0",
+            "com.docker.network.bridge.name": "docker0",
+            "com.docker.network.driver.mtu": "1500"
+        },
+        "Labels": {}
+    }
+]
+
+
+
+
+
