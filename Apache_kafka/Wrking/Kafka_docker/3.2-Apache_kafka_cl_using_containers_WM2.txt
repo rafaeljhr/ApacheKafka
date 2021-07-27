@@ -31,7 +31,7 @@ docker pull wurstmeister/kafka
 #create a directory 'kafka-installation4'
 #create a file 'docker-compose.yml' in this directory
 
-contents of 'docker-compose.yml'
+contents of 'docker-compose.yml' as provided in 'kafka-installation4'
 --
 --
 #to pull images and start the container

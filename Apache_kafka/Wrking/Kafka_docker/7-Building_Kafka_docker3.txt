@@ -1,1 +1,4 @@
->kafka-installation7
+#Building kafka & zookeeper images separately using separate 'Dockerfile' and running them in 2 different containers
+#This can be easily achieved using 'docker-compose' , however using 'Dockerfile' needs additional steps in order to let containers communicate with each other
+
+'kafka-installation7'

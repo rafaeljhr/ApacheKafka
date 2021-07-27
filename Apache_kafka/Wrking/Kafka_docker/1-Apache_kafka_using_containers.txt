@@ -31,7 +31,7 @@ docker pull wurstmeister/kafka
 #create a directory 'kafka-installation1'
 #create a file 'docker-compose.yml' in this directory
 
---contents of 'docker-compose.yml'
+--contents of 'docker-compose.yml' as provided in 'kafka-installation1'
 
 #to pull images and start the container
 $docker-compose -f docker-compose.yml up
@@ -39,10 +39,13 @@ $docker-compose -f docker-compose.yml up
 #to run containers in background
 $docker-compose -f docker-compose.yml up -d
 
---sample_run_out1.txt
+--refer sample_run_out1.txt as provided in 'kafka-installation1'
 
 #to look at containers running
 $docker-compose ps
+
+#to look at all images
+$docker images
 
 #to get into container
 $docker exec -it kafka /bin/sh
@@ -51,9 +54,9 @@ $docker exec -it kafka /bin/sh
 #ls /opt/kafka/bin
 #kafka-topics.sh --list --bootstrap-server localhost:9092
 
---sample_run_out1.txt
+--refer sample_run_out1.txt as provided in 'kafka-installation1'
 
-#to start containers
+#to stop containers
 $docker-compose down
 
 

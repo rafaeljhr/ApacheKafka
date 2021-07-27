@@ -13,13 +13,14 @@ $cd kafka-installation5
 $vi Dockerfile
 
 ---
-
+as provided in 'kafka-installation5'
 
 ---
 
 $vi start.sh
 
 ---
+as provided in 'kafka-installation5'
 
 ---
 
@@ -61,4 +62,4 @@ Similarly we can run producer and consumer
 #rest refer sample_run_out5-1.txt
 
 
-
+#Note**: Here the container which runs has kafka and zookeeper processes running within same container
