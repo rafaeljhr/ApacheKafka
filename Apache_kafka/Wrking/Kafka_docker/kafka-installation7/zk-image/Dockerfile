@@ -3,9 +3,7 @@ RUN cd /opt && curl -OL http://archive.apache.org/dist/zookeeper/zookeeper-3.4.6
 
 WORKDIR /opt
 COPY zoo.cfg /opt/zookeeper-3.4.6/conf
-
 COPY start.sh /opt
 CMD ["./start.sh"]
-EXPOSE 2181 2888 3888 8080
 
 
