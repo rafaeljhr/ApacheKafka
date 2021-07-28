@@ -1,0 +1,22 @@
+Instructions:
+Create your project > all classes for your apps > run as 'maven install'
+Check if done successfully - "Installing /root/kafka_apps/target/kafka-0.0.1-SNAPSHOT.jar"
+Create a Dockerfile in project
+--
+#using JDK
+FROM openjdk:8
+
+#copy jar into docker image
+COPY target/kafka-0.0.1-SNAPSHOT.jar /test.jar
+
+#setup the startup command to execute jar
+CMD ["java", "-jar", "/test.jar"]
+--
+root@m1:~/kafka_apps# apt install maven /*if maven not installed*/
+root@m1:~/kafka_apps# docker build -t test/kafka-ide .
+root@m1:~/kafka_apps# docker images
+root@m1:~/kafka_apps# docker run test/kafka-ide
+
+#will run your applications within a container , where in consumer tries to connect to kafka-broker.
+#application can be modified to connect to specific broker running via another container
+
