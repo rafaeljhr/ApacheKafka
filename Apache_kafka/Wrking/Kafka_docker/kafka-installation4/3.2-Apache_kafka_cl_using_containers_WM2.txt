@@ -1,3 +1,5 @@
+
+
 Install kafka cluster using Docker & Docker-compose [wurstmeister kafka,zookeeper image]
 -------------------
 --Allows us to run kafka on any OS
@@ -28,12 +30,27 @@ docker pull wurstmeister/kafka
 
 #But we will pull these images from our docker-compose.yml
 
-#create a directory 'kafka-installation3'
+##Special NOTES**
+This is similar to 'kafka-installation2', however here we
+--use 'wurstmeister' image
+--run 1 zookeeper container and 3 kafka broker containers, although all of these on 1 machine.
+
+#create a directory 'kafka-installation4'
 #create a file 'docker-compose.yml' in this directory
 
-contents of 'docker-compose.yml' as provided in 'kafka-installation3'
+contents of 'docker-compose.yml' as provided in 'kafka-installation4'
 --
 --
+Note**
+Being logged in root OR using sudo command update '/etc/hosts'
+ipaddress1 kafka1.test.local
+ipaddress1 kafka2.test.local  
+ipaddress1 kafka3.test.local
+
+Note** Above steps are needed,as 
+we will have 3 kafka containers and 1 zookeeper container,all running 
+on 1 machine with different ports.
+
 #to pull images and start the container
 $docker-compose -f docker-compose.yml up
 
@@ -49,8 +66,11 @@ $docker-compose ps
 $telnet localhost 12181
 <ctrl+c>
 
+#once you have your container running, you can get its name from 'docker container ls' command 
+& connect to it.
+
 #to connect to kafka cluster from CLI
-$docker exec  -it kafkainstallation2_kafka-1_1 /bin/sh
+$docker exec  -it kafkainstallation2_kafka-1_1 /bin/bash
 
 sh-4.4$ls /
 sh-4.4$ls /bin

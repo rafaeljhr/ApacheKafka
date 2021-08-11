@@ -40,7 +40,7 @@ $docker container ls
 $docker logs -f kafka-broker
 
 #get into container to work with kafka
-$docker exec -it kafka-broker /bin/sh
+$docker exec -it kafka-broker /bin/bash
 
 #rest refer sample_run_out5-1.txt
 

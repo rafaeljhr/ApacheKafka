@@ -1,5 +1,4 @@
-#Install kafka cluster using Docker & Docker-compose [confluentinc: kafka,zookeeper image]
-#Install kafka using Docker & Docker-compose
+Install kafka cluster using Docker & Docker-compose [wurstmeister kafka,zookeeper image]
 -------------------
 --Allows us to run kafka on any OS
 --Avoids requirements of installing new dependencies
@@ -18,21 +17,22 @@ docker-compose version 1.17.1, build unknown
 
 #These containers can be reached via some ports which are exposed.
 
---Look for 'docker image of zookeeper created by confluentinc'
-  https://hub.docker.com/r/confluentinc/cp-zookeeper
+--Look for 'docker image of zookeeper created by wurstmeister'
+  https://hub.docker.com/r/wurstmeister/zookeeper/
 
 --command to get the image
-docker pull confluentinc/cp-zookeeper
+docker pull wurstmeister/zookeeper
 
 --similarly for kafka
-docker pull confluentinc/cp-kafka
+docker pull wurstmeister/kafka
+
 #But we will pull these images from our docker-compose.yml
 
-#create a directory 'kafka-installation2'
+#create a directory 'kafka-installation3'
 #create a file 'docker-compose.yml' in this directory
 
---contents of 'docker-compose.yml' as provided in 'kafka-installation2'
-
+contents of 'docker-compose.yml' as provided in 'kafka-installation3'
+--
 --
 #to pull images and start the container
 $docker-compose -f docker-compose.yml up
@@ -50,7 +50,7 @@ $telnet localhost 12181
 <ctrl+c>
 
 #to connect to kafka cluster from CLI
-$docker exec  -it kafkainstallation2_kafka-1_1 /bin/sh
+$docker exec  -it kafkainstallation2_kafka-1_1 /bin/bash
 
 sh-4.4$ls /
 sh-4.4$ls /bin

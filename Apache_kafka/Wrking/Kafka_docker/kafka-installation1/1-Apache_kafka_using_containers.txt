@@ -48,7 +48,7 @@ $docker-compose ps
 $docker images
 
 #to get into container
-$docker exec -it kafka /bin/sh
+$docker exec -it kafka /bin/bash
 #ls /opt
 #ls /opt/kafka
 #ls /opt/kafka/bin
