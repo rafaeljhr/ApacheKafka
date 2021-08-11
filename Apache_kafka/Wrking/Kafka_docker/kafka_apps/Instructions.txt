@@ -1,10 +1,12 @@
 Instructions:
+
+root@m1:~# apt install maven /*if maven not installed*/
 Create your project > all classes for your apps > run a 'maven install'
 Check if done successfully - "Installing /root/kafka_apps/target/kafka-0.0.1-SNAPSHOT.jar"
 #To test locally from an IDE (start a kafka cluster as standalone)
 
 -Run producer application
--try curl command and do a post
+-try curl command and do a post(as shown below)
 -Run consumer application
 
 #To test by containerization/docker containers
@@ -20,7 +22,8 @@ COPY target/kafka-0.0.1-SNAPSHOT.jar /test.jar
 #setup the startup command to execute jar
 CMD ["java", "-jar", "/test.jar"]
 --
-root@m1:~/kafka_apps# apt install maven /*if maven not installed*/
+#Note, the jar must be existing in target folder of your project or complete the step of 'maven install'
+#Note, the Dockerfile must be existing in your project 'kafka_apps'
 root@m1:~/kafka_apps# docker build -t test/kafka-ide .
 root@m1:~/kafka_apps# docker images
 
@@ -30,10 +33,10 @@ root@m1:~/kafka_apps# docker images
 #run your docker image of app
 root@m1:~/kafka_apps# docker run test/kafka-ide
 
-#will run your applications within a container ,
+#The above command will run your applications within a container ,
 #this container should then communicate with kafka 
 #when application runs,
-     #Here producer creates a topic 'test_topic' when a publish is done via curl/API (broker to connect is provided in src/main/resources/application.yml)
+     #producer creates a topic 'test_topic' when a publish is done via curl/API (broker to connect is provided in src/main/resources/application.yml)
      #curl command : curl -X POST http://localhost:8080/publish?message=test1
      #consumer connects to kafka-broker (as per application.yml) and consumes the messages.
 
