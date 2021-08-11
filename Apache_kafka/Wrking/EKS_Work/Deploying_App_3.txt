@@ -1,0 +1,22 @@
+Create a directory: zookeeper-ensemble
+create a file or get file from 
+wget https://k8s.io/examples/application/zookeeper/zookeeper.yaml
+
+ajuser:~/environment $ kubectl apply -f zookeeper-ensemble/zookeeper.yaml  
+
+This creates the zk-hs Headless Service, the zk-cs Service, 
+the zk-pdb PodDisruptionBudget, and the zk StatefulSet.
+                                                                                          
+service/zk-hs unchanged
+service/zk-cs unchanged
+statefulset.apps/zk configured
+error: unable to recognize "zookeeper-ensemble/zookeeper.yaml": 
+no matches for kind "PodDisruptionBudget" in version "v1"
+
+#kubectl get pods -w -l app=zk
+kubectl get pods -w -l app=zk
+
+
+
+
+
