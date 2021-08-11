@@ -16,8 +16,6 @@ Highlevel Steps:
 #Setup EKS Cluster Master Node
 -login to AWS portal
 -Create Kubernetes cluster (using default settings and version same as for kubectl)
-
-
 -Look into cluster configurations
 -Review and create the cluster
 
@@ -28,7 +26,7 @@ Create EKS(Kubernetes) worker nodes
 -Setup worker nodes in EKS
 -Verifying worker node status from kubectl
 
-Delete EKS Cluster
+-Delete EKS Cluster
 -Delete Worker nodes
 -Delete Master node
 -Delete Key pair

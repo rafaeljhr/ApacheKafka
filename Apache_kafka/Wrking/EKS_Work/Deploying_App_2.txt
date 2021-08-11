@@ -4,15 +4,16 @@
 #even the most complex Kubernetes applications.
 
 #Setup Helm
+
+$
 wget https://get.helm.sh/helm-v3.6.3-linux-amd64.tar.gz
 tar -xvf helm-v3.6.3-linux-amd64.tar.gz
 cd linux-amd64/
 sudo mv helm /usr/local/bin
 helm version
-version.BuildInfo{Version:"v3.6.3", GitCommit:"d506314abfb5d21419df8c7e7e68012379db2354", GitTreeState:"clean", GoVersion:"go1.16.5"}
-$ 
+<shows>version.BuildInfo{Version:"v3.6.3", GitCommit:"d506314abfb5d21419df8c7e7e68012379db2354", GitTreeState:"clean", GoVersion:"go1.16.5"}
 
-Install Confluent Kafka Platform in Amazon EKS Using Helm Chart
+#Install Confluent Kafka Platform in Amazon EKS Using Helm Chart
 -----------------
 #Confluent Platform is a streaming platform for large-scale distributed environments, 
 #and is built on Apache Kafka. Confluent Platform enables all your interfaces and data systems
@@ -22,8 +23,8 @@ Install Confluent Kafka Platform in Amazon EKS Using Helm Chart
 #onto Kubernetes/EKS thus greatly simplifying the usage of Kafka components
 
 #Cloning the Confluent Helm Chart Repo
-helm repo add confluent https://confluentinc.github.io/cp-helm-charts/
-helm repo update
+$helm repo add confluent https://confluentinc.github.io/cp-helm-charts/
+$helm repo update
 
 #After the Confluent Platform Helm Chart installed, by default, 
 these components are to be setup on EKS.
@@ -34,7 +35,8 @@ these components are to be setup on EKS.
 -One Kafka Connect worker in one Pod(Deployment)
 -One KSQL server in one Pod.(Deployment)
 
-helm install confluent/cp-helm-charts -g
+$helm install confluent/cp-helm-charts -g
+
 ----sampleoutput-----
 NAME: cp-helm-charts-1628681515
 LAST DEPLOYED: Wed Aug 11 11:31:56 2021
@@ -123,7 +125,7 @@ To connect from a client pod:
   kafka-console-consumer --bootstrap-server cp-helm-charts-1628681515-cp-kafka-headless:9092 --topic cp-helm-charts-1628681515-topic --from-beginning --timeout-ms 2000 --max-messages 1 | grep "$MESSAGE
 ------------------
 #Checking Pods created and running
-kubectl get pods | awk {'print $1" "$3'} | column -t
+$kubectl get pods | awk {'print $1" "$3'} | column -t
 ---------sampleoutput------
 cp-helm-charts-1628681515-cp-control-center-6c5fc97d-j2dsz     Running
 cp-helm-charts-1628681515-cp-kafka-0                           Running
@@ -138,13 +140,13 @@ cp-helm-charts-1628681515-cp-zookeeper-1                       Running
 cp-helm-charts-1628681515-cp-zookeeper-2                       ContainerCreating
 ------------------------
 #Two StatefulSets created for Zookeeper cluster and Kafka cluster.
-ajuser:~ $ kubectl get statefulset
+$ kubectl get statefulset
 NAME                                     READY   AGE
 cp-helm-charts-1628681515-cp-kafka       3/3     2m38s
 cp-helm-charts-1628681515-cp-zookeeper   3/3     2m38s
 
 #For StatefulSets, each Pod has Persistent Volume Claim(PVC) created in AWS
-kubectl get pvc | awk {'print $1" "$2" "$4'} | column -t
+$kubectl get pvc | awk {'print $1" "$2" "$4'} | column -t
 NAME                                                 STATUS  CAPACITY
 datadir-0-cp-helm-charts-1628681515-cp-kafka-0       Bound   5Gi
 datadir-0-cp-helm-charts-1628681515-cp-kafka-1       Bound   5Gi
@@ -158,7 +160,7 @@ datalogdir-cp-helm-charts-1628681515-cp-zookeeper-2  Bound   10Gi
 
 #Deployments are created for Confluent Connectors, 
 #Confluent REST Proxy, Confluent KSQL, Confluent Schema Registry
-kubectl get deployments | awk {'print $1" "$5'} | column -t
+$kubectl get deployments | awk {'print $1" "$5'} | column -t
 ------------sampleoutput---------
 NAME                                          AGE
 cp-helm-charts-1628681515-cp-control-center   3m32s
@@ -169,7 +171,7 @@ cp-helm-charts-1628681515-cp-schema-registry  3m32s
 --------------------------------
 #ClusterIP Services created.
 -------------------sampleoutput----------------
-ajuser:~ $ kubectl get svc | awk {'print $1" "$2" "$3" "$5'} | column -t 
+$ kubectl get svc | awk {'print $1" "$2" "$3" "$5'} | column -t 
 NAME                                             TYPE       CLUSTER-IP      PORT(S)
 cp-helm-charts-1628681515-cp-control-center      ClusterIP  10.100.245.84   9021/TCP
 cp-helm-charts-1628681515-cp-kafka               ClusterIP  10.100.156.213  9092/TCP,5556/TCP
@@ -184,9 +186,13 @@ kubernetes                                       ClusterIP  10.100.0.1      443/
 ------------------------------------------
 #Creating a Pod with Zookeeper Client
 #creating zookeeper-client
-create a directory 'zookeeper-client'
-cd zookeeper-client
-create a file-->deployment.yaml
+#refer the directory 'zookeeper-client' and use it OR
+
+#create a directory 
+$mkdir zookeeper-client
+$cd zookeeper-client
+#create a file
+$vi deployment.yaml
 ---
 apiVersion: v1
 kind: Pod
@@ -202,23 +208,29 @@ spec:
      - -c
      - "exec tail -f /dev/null"
 ---
-kubectl apply -f deployment.yaml
+#After deployment.yaml file is ready..
 
-kubectl get pods
+<while being in zookeeper-client directory>
+$kubectl apply -f deployment.yaml
+
+$kubectl get pods
 
 #login into zookeeper-client pod
-kubectl exec -it zookeeper-client -- /bin/bash
+$kubectl exec -it zookeeper-client -- /bin/bash
 
 within the pod
 >zookeeper-shell zookeeper-client:2181
 >ls /brokers/ids
 
 #creating kafka-client pod
-mkdir 'kafka-client'
-cd
-create a file ---> deployment.yaml
----
+#refer the directory 'kafka-client' and use it OR
 
+$mkdir kafka-client
+$cd  kafka-client
+#create a file 
+$vi deployment.yaml
+
+---
 apiVersion: v1
 kind: Pod
 metadata:
@@ -233,6 +245,11 @@ spec:
      - -c
      - "exec tail -f /dev/null"
 ---
+#after deployment file is ready
+<while being in kafka-client directory
+
+$kubectl apply -f deployment.yaml
+
 #Login into kafka-client pod
 $ kubectl exec -it kafka-client -- /bin/bash
 root@kafka-client:/# kafka-topics --zookeeper zookeeper-client:2181 --topic topic1 
@@ -251,7 +268,7 @@ root@kafka-client:/# kafka-console-consumer --bootstrap-server kafka-xxxxx:9092 
 topic1 --from-beginning --timeout-ms 2000 --max-messages 1 | grep "$TEXT"
 
 --Additional: To stop and start PODS
-ajuser:~/environment $ kubectl get deployments | awk {'print $1" "$5'} | column -t
+$ kubectl get deployments | awk {'print $1" "$5'} | column -t
 NAME                                          AGE
 cp-helm-charts-1628681515-cp-control-center   102m
 cp-helm-charts-1628681515-cp-kafka-connect    102m
