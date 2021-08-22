@@ -1,0 +1,277 @@
+#Running multiple pods ,each having one zk process
+#edit zookeeper.yml and change replicas to 3, however this will run zk processes as stand alone in 3 different pods
+
+ajuser:~ $ kubectl apply -f kafka-installation5/kubernetes/namespace.yml 
+namespace/kafka created
+
+ajuser:~ $ kubectl apply -f kafka-installation5/kubernetes/orig-e3/zookeeper.yml                                                           
+statefulset.apps/zoo created
+
+ajuser:~ $ kubectl get pods --namespace kafka
+NAME    READY   STATUS              RESTARTS   AGE
+zoo-0   1/1     Running             0          20s
+zoo-1   0/1     ContainerCreating   0          20s
+zoo-2   0/1     Running             0          20s
+
+ajuser:~ $ kubectl get pods --namespace kafka
+NAME    READY   STATUS              RESTARTS   AGE
+zoo-0   1/1     Running             0          30s
+zoo-1   0/1     ContainerCreating   0          30s
+zoo-2   1/1     Running             0          30s
+
+ajuser:~ $ kubectl get pods --namespace kafka
+NAME    READY   STATUS              RESTARTS   AGE
+zoo-0   1/1     Running             0          34s
+zoo-1   0/1     ContainerCreating   0          34s
+zoo-2   1/1     Running             0          34s
+
+ajuser:~ $ kubectl get pods --namespace kafka
+NAME    READY   STATUS    RESTARTS   AGE
+zoo-0   1/1     Running   0          42s
+zoo-1   0/1     Running   0          42s
+zoo-2   1/1     Running   0          42s
+
+#connecting to 1st POD
+ajuser:~ $ kubectl exec -it zoo-0 /bin/bash --namespace kafka                                                                              
+kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl exec [POD] -- [COMMAND] instead.
+root@zoo-0:/opt/zookeeper-3.4.13# bin/zkCli.sh zoo-0:2181
+Connecting to localhost:2181
+2021-08-22 18:15:09,286 [myid:] - INFO  [main:Environment@100] - Client environment:zookeeper.version=3.4.13-2d71af4dbe22557fda74f9a9b4309b15a7487f03, built on 06/29/2018 04:05 GMT
+2021-08-22 18:15:09,291 [myid:] - INFO  [main:Environment@100] - Client environment:host.name=zoo-0.zoo.kafka.svc.cluster.local
+2021-08-22 18:15:09,291 [myid:] - INFO  [main:Environment@100] - Client environment:java.version=1.7.0_65
+2021-08-22 18:15:09,294 [myid:] - INFO  [main:Environment@100] - Client environment:java.vendor=Oracle Corporation
+2021-08-22 18:15:09,294 [myid:] - INFO  [main:Environment@100] - Client environment:java.home=/usr/lib/jvm/java-7-openjdk-amd64/jre
+2021-08-22 18:15:09,294 [myid:] - INFO  [main:Environment@100] - Client environment:java.class.path=/opt/zookeeper-3.4.13/bin/../build/classes:/opt/zookeeper-3.4.13/bin/../build/lib/*.jar:/opt/zookeeper-3.4.13/bin/../lib/slf4j-log4j12-1.7.25.jar:/opt/zookeeper-3.4.13/bin/../lib/slf4j-api-1.7.25.jar:/opt/zookeeper-3.4.13/bin/../lib/netty-3.10.6.Final.jar:/opt/zookeeper-3.4.13/bin/../lib/log4j-1.2.17.jar:/opt/zookeeper-3.4.13/bin/../lib/jline-0.9.94.jar:/opt/zookeeper-3.4.13/bin/../lib/audience-annotations-0.5.0.jar:/opt/zookeeper-3.4.13/bin/../zookeeper-3.4.13.jar:/opt/zookeeper-3.4.13/bin/../src/java/lib/*.jar:/opt/zookeeper-3.4.13/bin/../conf:
+2021-08-22 18:15:09,294 [myid:] - INFO  [main:Environment@100] - Client environment:java.library.path=/usr/java/packages/lib/amd64:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib
+2021-08-22 18:15:09,294 [myid:] - INFO  [main:Environment@100] - Client environment:java.io.tmpdir=/tmp
+2021-08-22 18:15:09,294 [myid:] - INFO  [main:Environment@100] - Client environment:java.compiler=<NA>
+2021-08-22 18:15:09,295 [myid:] - INFO  [main:Environment@100] - Client environment:os.name=Linux
+2021-08-22 18:15:09,295 [myid:] - INFO  [main:Environment@100] - Client environment:os.arch=amd64
+2021-08-22 18:15:09,295 [myid:] - INFO  [main:Environment@100] - Client environment:os.version=5.4.129-63.229.amzn2.x86_64
+2021-08-22 18:15:09,295 [myid:] - INFO  [main:Environment@100] - Client environment:user.name=root
+2021-08-22 18:15:09,295 [myid:] - INFO  [main:Environment@100] - Client environment:user.home=/root
+2021-08-22 18:15:09,295 [myid:] - INFO  [main:Environment@100] - Client environment:user.dir=/opt/zookeeper-3.4.13
+2021-08-22 18:15:09,297 [myid:] - INFO  [main:ZooKeeper@442] - Initiating client connection, connectString=localhost:2181 sessionTimeout=30000 watcher=org.apache.zookeeper.ZooKeeperMain$MyWatcher@674e5e21
+ZooKeeper -server host:port cmd args
+        connect host:port
+        get path [watch]
+        ls path [watch]
+        set path data [version]
+        rmr path
+        delquota [-n|-b] path
+2021-08-22 18:15:09,331 [myid:] - INFO  [main-SendThread(localhost:2181):ClientCnxn$SendThread@1029] - Opening socket connection to server localhost/127.0.0.1:2181. Will not attempt to authenticate using SASL (unknown error)
+        quit 
+        printwatches on|off
+        create [-s] [-e] path data acl
+        stat path [watch]
+        close 
+        ls2 path [watch]
+        history 
+        listquota path
+        setAcl path acl
+        getAcl path
+        sync path
+        redo cmdno
+        addauth scheme auth
+        delete path [version]
+        setquota -n|-b val path
+
+root@zoo-0:/opt/zookeeper-3.4.13# ls                     
+LICENSE.txt  README_packaging.txt  conf     dist-maven  ivysettings.xml  src                       zookeeper-3.4.13.jar.md5
+NOTICE.txt   bin                   contrib  docs        lib              zookeeper-3.4.13.jar      zookeeper-3.4.13.jar.sha1
+README.md    build.xml             data     ivy.xml     recipes          zookeeper-3.4.13.jar.asc
+
+root@zoo-0:/opt/zookeeper-3.4.13# bin/zkCli.sh zoo-1:2181                                                                                  
+Connecting to localhost:2181
+2021-08-22 18:15:56,148 [myid:] - INFO  [main:Environment@100] - Client environment:zookeeper.version=3.4.13-2d71af4dbe22557fda74f9a9b4309b15a7487f03, built on 06/29/2018 04:05 GMT
+2021-08-22 18:15:56,152 [myid:] - INFO  [main:Environment@100] - Client environment:host.name=zoo-0.zoo.kafka.svc.cluster.local
+2021-08-22 18:15:56,152 [myid:] - INFO  [main:Environment@100] - Client environment:java.version=1.7.0_65
+2021-08-22 18:15:56,157 [myid:] - INFO  [main:Environment@100] - Client environment:java.vendor=Oracle Corporation
+2021-08-22 18:15:56,157 [myid:] - INFO  [main:Environment@100] - Client environment:java.home=/usr/lib/jvm/java-7-openjdk-amd64/jre
+2021-08-22 18:15:56,157 [myid:] - INFO  [main:Environment@100] - Client environment:java.class.path=/opt/zookeeper-3.4.13/bin/../build/classes:/opt/zookeeper-3.4.13/bin/../build/lib/*.jar:/opt/zookeeper-3.4.13/bin/../lib/slf4j-log4j12-1.7.25.jar:/opt/zookeeper-3.4.13/bin/../lib/slf4j-api-1.7.25.jar:/opt/zookeeper-3.4.13/bin/../lib/netty-3.10.6.Final.jar:/opt/zookeeper-3.4.13/bin/../lib/log4j-1.2.17.jar:/opt/zookeeper-3.4.13/bin/../lib/jline-0.9.94.jar:/opt/zookeeper-3.4.13/bin/../lib/audience-annotations-0.5.0.jar:/opt/zookeeper-3.4.13/bin/../zookeeper-3.4.13.jar:/opt/zookeeper-3.4.13/bin/../src/java/lib/*.jar:/opt/zookeeper-3.4.13/bin/../conf:
+2021-08-22 18:15:56,158 [myid:] - INFO  [main:Environment@100] - Client environment:java.library.path=/usr/java/packages/lib/amd64:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib
+2021-08-22 18:15:56,158 [myid:] - INFO  [main:Environment@100] - Client environment:java.io.tmpdir=/tmp
+2021-08-22 18:15:56,158 [myid:] - INFO  [main:Environment@100] - Client environment:java.compiler=<NA>
+2021-08-22 18:15:56,158 [myid:] - INFO  [main:Environment@100] - Client environment:os.name=Linux
+2021-08-22 18:15:56,159 [myid:] - INFO  [main:Environment@100] - Client environment:os.arch=amd64
+2021-08-22 18:15:56,159 [myid:] - INFO  [main:Environment@100] - Client environment:os.version=5.4.129-63.229.amzn2.x86_64
+2021-08-22 18:15:56,159 [myid:] - INFO  [main:Environment@100] - Client environment:user.name=root
+2021-08-22 18:15:56,159 [myid:] - INFO  [main:Environment@100] - Client environment:user.home=/root
+2021-08-22 18:15:56,159 [myid:] - INFO  [main:Environment@100] - Client environment:user.dir=/opt/zookeeper-3.4.13
+2021-08-22 18:15:56,161 [myid:] - INFO  [main:ZooKeeper@442] - Initiating client connection, connectString=localhost:2181 sessionTimeout=30000 watcher=org.apache.zookeeper.ZooKeeperMain$MyWatcher@5a73c7fb
+ZooKeeper -server host:port cmd args
+        connect host:port
+        get path [watch]
+        ls path [watch]
+        set path data [version]
+        rmr path
+        delquota [-n|-b] path
+        quit 
+        printwatches on|off
+        create [-s] [-e] path data acl
+        stat path [watch]
+        close 
+        ls2 path [watch]
+        history 
+        listquota path
+        setAcl path acl
+        getAcl path
+        sync path
+        redo cmdno
+        addauth scheme auth
+        delete path [version]
+        setquota -n|-b val path
+root@zoo-0:/opt/zookeeper-3.4.13# echo stat | nc localhost 2181
+Zookeeper version: 3.4.13-2d71af4dbe22557fda74f9a9b4309b15a7487f03, built on 06/29/2018 04:05 GMT
+Clients:
+ /127.0.0.1:60056[0](queued=0,recved=1,sent=0)
+
+Latency min/avg/max: 0/0/0
+Received: 8
+Sent: 7
+Connections: 1
+Outstanding: 0
+Zxid: 0x0
+Mode: standalone
+Node count: 4
+root@zoo-0:/opt/zookeeper-3.4.13# quit
+bash: quit: command not found
+root@zoo-0:/opt/zookeeper-3.4.13# exit
+exit
+command terminated with exit code 127
+
+#connecting to 2nd POD
+ajuser:~ $ kubectl exec -it zoo-1 /bin/bash --namespace kafka                                                                              
+kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl exec [POD] -- [COMMAND] instead.
+root@zoo-1:/opt/zookeeper-3.4.13# bin/zkCli.sh
+Connecting to localhost:2181
+2021-08-22 18:17:02,387 [myid:] - INFO  [main:Environment@100] - Client environment:zookeeper.version=3.4.13-2d71af4dbe22557fda74f9a9b4309b15a7487f03, built on 06/29/2018 04:05 GMT
+2021-08-22 18:17:02,391 [myid:] - INFO  [main:Environment@100] - Client environment:host.name=zoo-1.zoo.kafka.svc.cluster.local
+2021-08-22 18:17:02,391 [myid:] - INFO  [main:Environment@100] - Client environment:java.version=1.7.0_65
+2021-08-22 18:17:02,394 [myid:] - INFO  [main:Environment@100] - Client environment:java.vendor=Oracle Corporation
+2021-08-22 18:17:02,395 [myid:] - INFO  [main:Environment@100] - Client environment:java.home=/usr/lib/jvm/java-7-openjdk-amd64/jre
+2021-08-22 18:17:02,395 [myid:] - INFO  [main:Environment@100] - Client environment:java.class.path=/opt/zookeeper-3.4.13/bin/../build/classes:/opt/zookeeper-3.4.13/bin/../build/lib/*.jar:/opt/zookeeper-3.4.13/bin/../lib/slf4j-log4j12-1.7.25.jar:/opt/zookeeper-3.4.13/bin/../lib/slf4j-api-1.7.25.jar:/opt/zookeeper-3.4.13/bin/../lib/netty-3.10.6.Final.jar:/opt/zookeeper-3.4.13/bin/../lib/log4j-1.2.17.jar:/opt/zookeeper-3.4.13/bin/../lib/jline-0.9.94.jar:/opt/zookeeper-3.4.13/bin/../lib/audience-annotations-0.5.0.jar:/opt/zookeeper-3.4.13/bin/../zookeeper-3.4.13.jar:/opt/zookeeper-3.4.13/bin/../src/java/lib/*.jar:/opt/zookeeper-3.4.13/bin/../conf:
+2021-08-22 18:17:02,395 [myid:] - INFO  [main:Environment@100] - Client environment:java.library.path=/usr/java/packages/lib/amd64:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib
+2021-08-22 18:17:02,395 [myid:] - INFO  [main:Environment@100] - Client environment:java.io.tmpdir=/tmp
+2021-08-22 18:17:02,395 [myid:] - INFO  [main:Environment@100] - Client environment:java.compiler=<NA>
+2021-08-22 18:17:02,395 [myid:] - INFO  [main:Environment@100] - Client environment:os.name=Linux
+2021-08-22 18:17:02,396 [myid:] - INFO  [main:Environment@100] - Client environment:os.arch=amd64
+2021-08-22 18:17:02,396 [myid:] - INFO  [main:Environment@100] - Client environment:os.version=5.4.129-63.229.amzn2.x86_64
+2021-08-22 18:17:02,396 [myid:] - INFO  [main:Environment@100] - Client environment:user.name=root
+2021-08-22 18:17:02,396 [myid:] - INFO  [main:Environment@100] - Client environment:user.home=/root
+2021-08-22 18:17:02,396 [myid:] - INFO  [main:Environment@100] - Client environment:user.dir=/opt/zookeeper-3.4.13
+2021-08-22 18:17:02,408 [myid:] - INFO  [main:ZooKeeper@442] - Initiating client connection, connectString=localhost:2181 sessionTimeout=30000 watcher=org.apache.zookeeper.ZooKeeperMain$MyWatcher@4a05fd83
+Welcome to ZooKeeper!
+2021-08-22 18:17:02,448 [myid:] - INFO  [main-SendThread(localhost:2181):ClientCnxn$SendThread@1029] - Opening socket connection to server localhost/127.0.0.1:2181. Will not attempt to authenticate using SASL (unknown error)
+JLine support is enabled
+2021-08-22 18:17:02,502 [myid:] - INFO  [main-SendThread(localhost:2181):ClientCnxn$SendThread@879] - Socket connection established to localhost/127.0.0.1:2181, initiating session
+[zk: localhost:2181(CONNECTING) 0] 2021-08-22 18:17:02,583 [myid:] - INFO  [main-SendThread(localhost:2181):ClientCnxn$SendThread@1303] - Session establishment complete on server localhost/127.0.0.1:2181, sessionid = 0x10000742a070000, negotiated timeout = 30000
+
+WATCHER::
+
+WatchedEvent state:SyncConnected type:None path:null
+
+[zk: localhost:2181(CONNECTED) 0] ls
+[zk: localhost:2181(CONNECTED) 1] ls /
+[zookeeper]
+[zk: localhost:2181(CONNECTED) 4] quit
+Quitting...
+2021-08-22 18:17:31,982 [myid:] - INFO  [main:ZooKeeper@693] - Session: 0x10000742a070000 closed
+2021-08-22 18:17:31,984 [myid:] - INFO  [main-EventThread:ClientCnxn$EventThread@522] - EventThread shut down for session: 0x10000742a070000
+root@zoo-1:/opt/zookeeper-3.4.13# echo stat | nc localhost 2181
+Zookeeper version: 3.4.13-2d71af4dbe22557fda74f9a9b4309b15a7487f03, built on 06/29/2018 04:05 GMT
+Clients:
+ /127.0.0.1:48330[0](queued=0,recved=1,sent=0)
+
+Latency min/avg/max: 0/6/33
+Received: 15
+Sent: 14
+Connections: 1
+Outstanding: 0
+Zxid: 0x2
+Mode: standalone
+Node count: 4
+root@zoo-1:/opt/zookeeper-3.4.13# exit
+exit
+
+#connecting to 3rd POD
+ajuser:~ $ kubectl exec -it zoo-2 /bin/bash --namespace kafka                                                                              
+kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl exec [POD] -- [COMMAND] instead.
+root@zoo-2:/opt/zookeeper-3.4.13# bin/zkCli.sh
+Connecting to localhost:2181
+2021-08-22 18:18:18,054 [myid:] - INFO  [main:Environment@100] - Client environment:zookeeper.version=3.4.13-2d71af4dbe22557fda74f9a9b4309b15a7487f03, built on 06/29/2018 04:05 GMT
+2021-08-22 18:18:18,058 [myid:] - INFO  [main:Environment@100] - Client environment:host.name=zoo-2.zoo.kafka.svc.cluster.local
+2021-08-22 18:18:18,059 [myid:] - INFO  [main:Environment@100] - Client environment:java.version=1.7.0_65
+2021-08-22 18:18:18,062 [myid:] - INFO  [main:Environment@100] - Client environment:java.vendor=Oracle Corporation
+2021-08-22 18:18:18,062 [myid:] - INFO  [main:Environment@100] - Client environment:java.home=/usr/lib/jvm/java-7-openjdk-amd64/jre
+2021-08-22 18:18:18,062 [myid:] - INFO  [main:Environment@100] - Client environment:java.class.path=/opt/zookeeper-3.4.13/bin/../build/classes:/opt/zookeeper-3.4.13/bin/../build/lib/*.jar:/opt/zookeeper-3.4.13/bin/../lib/slf4j-log4j12-1.7.25.jar:/opt/zookeeper-3.4.13/bin/../lib/slf4j-api-1.7.25.jar:/opt/zookeeper-3.4.13/bin/../lib/netty-3.10.6.Final.jar:/opt/zookeeper-3.4.13/bin/../lib/log4j-1.2.17.jar:/opt/zookeeper-3.4.13/bin/../lib/jline-0.9.94.jar:/opt/zookeeper-3.4.13/bin/../lib/audience-annotations-0.5.0.jar:/opt/zookeeper-3.4.13/bin/../zookeeper-3.4.13.jar:/opt/zookeeper-3.4.13/bin/../src/java/lib/*.jar:/opt/zookeeper-3.4.13/bin/../conf:
+2021-08-22 18:18:18,062 [myid:] - INFO  [main:Environment@100] - Client environment:java.library.path=/usr/java/packages/lib/amd64:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib
+2021-08-22 18:18:18,062 [myid:] - INFO  [main:Environment@100] - Client environment:java.io.tmpdir=/tmp
+2021-08-22 18:18:18,062 [myid:] - INFO  [main:Environment@100] - Client environment:java.compiler=<NA>
+2021-08-22 18:18:18,063 [myid:] - INFO  [main:Environment@100] - Client environment:os.name=Linux
+2021-08-22 18:18:18,063 [myid:] - INFO  [main:Environment@100] - Client environment:os.arch=amd64
+2021-08-22 18:18:18,063 [myid:] - INFO  [main:Environment@100] - Client environment:os.version=5.4.129-63.229.amzn2.x86_64
+2021-08-22 18:18:18,063 [myid:] - INFO  [main:Environment@100] - Client environment:user.name=root
+2021-08-22 18:18:18,063 [myid:] - INFO  [main:Environment@100] - Client environment:user.home=/root
+2021-08-22 18:18:18,063 [myid:] - INFO  [main:Environment@100] - Client environment:user.dir=/opt/zookeeper-3.4.13
+2021-08-22 18:18:18,065 [myid:] - INFO  [main:ZooKeeper@442] - Initiating client connection, connectString=localhost:2181 sessionTimeout=30000 watcher=org.apache.zookeeper.ZooKeeperMain$MyWatcher@674e5e21
+Welcome to ZooKeeper!
+2021-08-22 18:18:18,084 [myid:] - INFO  [main-SendThread(localhost:2181):ClientCnxn$SendThread@1029] - Opening socket connection to server localhost/127.0.0.1:2181. Will not attempt to authenticate using SASL (unknown error)
+2021-08-22 18:18:18,092 [myid:] - INFO  [main-SendThread(localhost:2181):ClientCnxn$SendThread@879] - Socket connection established to localhost/127.0.0.1:2181, initiating session
+JLine support is enabled
+2021-08-22 18:18:18,122 [myid:] - INFO  [main-SendThread(localhost:2181):ClientCnxn$SendThread@1303] - Session establishment complete on server localhost/127.0.0.1:2181, sessionid = 0x1000073e6800000, negotiated timeout = 30000
+
+WATCHER::
+
+WatchedEvent state:SyncConnected type:None path:null
+[zk: localhost:2181(CONNECTED) 0] echo stat | nc localhost 2181
+ZooKeeper -server host:port cmd args
+        connect host:port
+        get path [watch]
+        ls path [watch]
+        set path data [version]
+        rmr path
+        delquota [-n|-b] path
+        quit 
+        printwatches on|off
+        create [-s] [-e] path data acl
+        stat path [watch]
+        close 
+        ls2 path [watch]
+        history 
+        listquota path
+        setAcl path acl
+        getAcl path
+        sync path
+        redo cmdno
+        addauth scheme auth
+        delete path [version]
+        setquota -n|-b val path
+[zk: localhost:2181(CONNECTED) 1] quit
+Quitting...
+2021-08-22 18:19:00,343 [myid:] - INFO  [main:ZooKeeper@693] - Session: 0x1000073e6800000 closed
+2021-08-22 18:19:00,345 [myid:] - INFO  [main-EventThread:ClientCnxn$EventThread@522] - EventThread shut down for session: 0x1000073e6800000
+root@zoo-2:/opt/zookeeper-3.4.13# echo stat | nc localhost 2181
+Zookeeper version: 3.4.13-2d71af4dbe22557fda74f9a9b4309b15a7487f03, built on 06/29/2018 04:05 GMT
+Clients:
+ /127.0.0.1:51750[0](queued=0,recved=1,sent=0)
+
+Latency min/avg/max: 0/2/11
+Received: 19
+Sent: 18
+Connections: 1
+Outstanding: 0
+Zxid: 0x2
+Mode: standalone
+Node count: 4
+
+root@zoo-2:/opt/zookeeper-3.4.13# exit
+exit
+
+ajuser:~ $ kubectl get pods --namespace kafka
+NAME    READY   STATUS    RESTARTS   AGE
+zoo-0   1/1     Running   0          6m14s
+zoo-1   1/1     Running   0          6m14s
+zoo-2   1/1     Running   0          6m14s
+
+#cleaning up
