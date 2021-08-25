@@ -1,2 +1,44 @@
 #connect to out setup of 3 zks and 1 kafka broker using a zk-client in pod
+ajuser:~ $ kubectl apply -f zookeeper-client/deployment.yaml 
+pod/zookeeper-client created
+ajuser:~ $ kubectl get pods
+NAME                             READY   STATUS              RESTARTS   AGE
+kafka-broker0-766479dc64-49rcb   1/1     Running             0          20m
+zk-0                             1/1     Running             0          23m
+zk-1                             1/1     Running             0          23m
+zk-2                             1/1     Running             0          22m
+zookeeper-client                 0/1     ContainerCreating   0          6s
+ajuser:~ $ kubectl get pods
+NAME                             READY   STATUS              RESTARTS   AGE
+kafka-broker0-766479dc64-49rcb   1/1     Running             0          20m
+zk-0                             1/1     Running             0          23m
+zk-1                             1/1     Running             0          23m
+zk-2                             1/1     Running             0          22m
+zookeeper-client                 0/1     ContainerCreating   0          10s
+ajuser:~ $ kubectl get pods
+NAME                             READY   STATUS    RESTARTS   AGE
+kafka-broker0-766479dc64-49rcb   1/1     Running   0          20m
+zk-0                             1/1     Running   0          24m
+zk-1                             1/1     Running   0          23m
+zk-2                             1/1     Running   0          22m
+zookeeper-client                 1/1     Running   0          18s
 
+ajuser:~ $ kubectl exec -it zookeeper-client /bin/bash
+kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl exec [POD] -- [COMMAND] instead.
+root@zookeeper-client:/# /usr/bin/zookeeper-shell zk-hs:2181
+Connecting to zk-hs:2181
+Welcome to ZooKeeper!
+JLine support is enabled
+
+WATCHER::
+
+WatchedEvent state:SyncConnected type:None path:null
+[zk: zk-hs:2181(CONNECTED) 0] ls /
+[cluster, controller_epoch, controller, brokers, zookeeper, feature, admin, isr_change_notification, consumers, log_dir_event_notification, latest_producer_id_block, config]
+[zk: zk-hs:2181(CONNECTED) 1] ls /cluster
+[id]
+
+
+##
+Similarly if needed we can also start a pod with kafka-client
+ajuser:~ $ kubectl apply -f kafka-client/deployment.yaml
