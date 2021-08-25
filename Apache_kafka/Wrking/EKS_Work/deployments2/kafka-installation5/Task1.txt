@@ -1,11 +1,6 @@
 #Task1
 setup eks cluster
 ajuser:~/environment $ kubectl get nodes
-NAME                                              STATUS   ROLES    AGE     VERSION
-ip-192-168-14-24.eu-central-1.compute.internal    Ready    <none>   9m52s   v1.19.13-eks-8df270
-ip-192-168-24-50.eu-central-1.compute.internal    Ready    <none>   9m49s   v1.19.13-eks-8df270
-ip-192-168-36-240.eu-central-1.compute.internal   Ready    <none>   9m49s   v1.19.13-eks-8df270
-ip-192-168-90-85.eu-central-1.compute.internal    Ready    <none>   9m51s   v1.19.13-eks-8df270
 
 ajuser:~/environment $ kubectl get pods
 No resources found in default namespace.
@@ -71,9 +66,4 @@ Step2:Running a container using our pre-built image using docker-compose
 
 Step3: Running container using our image on eks cluster
 --not needed as of now, can be done ( same as example of running a kafka-client in 1/multiple pods)
-
-Step4: Running containers using image from web i.e. running a zk-ensemble on EKS
-
-Step 5: Running 1 or multiple kafka brokers to connect to our zk processes running within containers within pods
-
 

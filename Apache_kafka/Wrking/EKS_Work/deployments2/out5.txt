@@ -1,0 +1,2 @@
+#connect to out setup of 3 zks and 1 kafka broker using a zk-client in pod
+
