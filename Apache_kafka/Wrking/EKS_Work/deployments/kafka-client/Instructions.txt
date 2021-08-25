@@ -1,0 +1,12 @@
+#The deployment.yaml file provided here in this folder can be used to deploy a kafka-client in POD.
+#Scenario:
+>We may have setup kafka cluster using our own images/ images from web/ using HELM charts etc.
+>This cluster would be running on EKS in different PODS > containers across worker nodes.
+>We can get into one of kafka pods and work with kafka OR
+>We can have a 'kafka-client' image running within a container within a POD which allows us to connect to kafka
+
+#to use this deployment.yaml we need to 
+$kubectl apply -f kafka-client/deployment.yaml
+
+#After pod is running , connect to pod and test access to kafka
+

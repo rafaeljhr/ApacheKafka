@@ -1,0 +1,12 @@
+#The deployment.yaml file provided here in this folder can be used to deploy a zookeeper-ensemble (cluster) in PODs on EKS
+#The pod-disruption....yaml file provided here is setup PodDisruption policy for our ensemble
+
+
+#check both the files and customize as per your environment
+
+#to use this deployment.yaml we need to 
+$kubectl apply -f zookeeper-ensemble/deployment.yaml
+$kubectl apply -f zookeeper-ensemble/zookeeper-pod-disruption-budget-minavailable.yaml
+
+#check if pods are running and can connect to each zookeeper pod to check its status if it is leader/follower
+
