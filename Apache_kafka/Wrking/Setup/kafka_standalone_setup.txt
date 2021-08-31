@@ -10,13 +10,13 @@ http://archive.apache.org/dist/kafka/2.2.1/kafka_2.11-2.2.1.tgz
 
 $sudo su
 $cd /usr/local
-$tar -xvf /home/hdu/Downloads/kafka_2.11-2.2.1.tgz
+$tar -xvf /home/elk/Downloads/kafka_2.11-2.2.1.tgz
 $ln -s kafka_2.11-2.2.1 kafka
-$chown -R hdu:hdu kafka*
+$chown -R elk:elk kafka*
 
 ---update path in .bashrc
 
-$su - hdu
+$su - elk
 $vi .bashrc
 export KAFKA_HOME=/usr/local/kafka
 export PATH=$PATH:$KAFKA_HOME/bin
@@ -26,7 +26,7 @@ $source .bashrc
 /usr/local/kafka/config/server.properties
 /usr/local/kafka/config/zookeeper.properties
 
-$note** logged in as hdu
+$note** logged in as elk
 # Start the ZooKeeper service
 # Note: Soon, ZooKeeper will no longer be required by Apache Kafka.
 #if running a zookeeper externally, this step is not required and kafka can connect to external zk

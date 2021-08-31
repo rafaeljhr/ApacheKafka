@@ -35,7 +35,7 @@ ipaddress3    hostname3
 update hostnames/check hostnames
 cat /etc/hostname
 
-sudo visudo and add 'hdu' as user next to root where you see ALL
+sudo visudo and add 'elk' as user next to root where you see ALL
 This will give your user sudo access
 
 $java -version
@@ -44,8 +44,8 @@ $java -version
 $yum install java-1.8.0-openjdk-devel
 
 update your java path in your user's .bashrc
-(ex: my user hdu)
-su - hdu
+(ex: my user elk)
+su - elk
 
 vi .bashrc
 export JAVA_HOME=/usr/lib/jvm/jdk****
@@ -60,19 +60,19 @@ Now Generate ssh keys for your user on ubuntu
 
 Commands:
 --------------
----Note** we are logged in as 'hdu'
+---Note** we are logged in as 'elk'
 To have SSH access across machines
 1.generate ssh keys using 
 $ssh-keygen -t rsa -P ""
 
 2.Distributing ssh public keys to other machines
 ----------------------
-$hdu$c1:ssh-copy-id -i $HOME/.ssh/id_rsa.pub hdu@c2
-$hdu$c1:ssh-copy-id -i $HOME/.ssh/id_rsa.pub hdu@c3
-$hdu$c2:ssh-copy-id -i $HOME/.ssh/id_rsa.pub hdu@c1
-$hdu$c2:ssh-copy-id -i $HOME/.ssh/id_rsa.pub hdu@c3
-$hdu$c3:ssh-copy-id -i $HOME/.ssh/id_rsa.pub hdu@c1
-$hdu$c3:ssh-copy-id -i $HOME/.ssh/id_rsa.pub hdu@c2
+$elk$c1:ssh-copy-id -i $HOME/.ssh/id_rsa.pub elk@c2
+$elk$c1:ssh-copy-id -i $HOME/.ssh/id_rsa.pub elk@c3
+$elk$c2:ssh-copy-id -i $HOME/.ssh/id_rsa.pub elk@c1
+$elk$c2:ssh-copy-id -i $HOME/.ssh/id_rsa.pub elk@c3
+$elk$c3:ssh-copy-id -i $HOME/.ssh/id_rsa.pub elk@c1
+$elk$c3:ssh-copy-id -i $HOME/.ssh/id_rsa.pub elk@c2
 
 3.To enable SSH access to your local machine with this newly created key
 ----------------------------------------
@@ -90,8 +90,8 @@ zookeeper-3.4.6.tar.gz
 
 ---Download on each node 
    or download on 1st node and then copy(scp) to each node 
-   [hdu$c1>scp /home/hdu/Downloads/zookeeper-3.4.6.tar.gz hdu@c2:/home/hdu/Downloads/]
-   [hdu$c1>scp /home/hdu/Downloads/zookeeper-3.4.6.tar.gz hdu@c3:/home/hdu/Downloads/]
+   [elk$c1>scp /home/elk/Downloads/zookeeper-3.4.6.tar.gz elk@c2:/home/elk/Downloads/]
+   [elk$c1>scp /home/elk/Downloads/zookeeper-3.4.6.tar.gz elk@c3:/home/elk/Downloads/]
 
 #check in nodes in /usr/local if it already has zookeeper related directory
 $cd /usr/local
@@ -103,14 +103,14 @@ $ls -all
 
 su - root
 $cd /usr/local
-$tar -xvf /home/hdu/Downloads/zookeeper-3.4.6.tar.gz
+$tar -xvf /home/elk/Downloads/zookeeper-3.4.6.tar.gz
 $ln -s zookeeper-3.4.6 zookeeper
-$chown -R hdu:hdu zookeeper*
+$chown -R elk:elk zookeeper*
 
-$su - hdu
+$su - elk
 #check if .bashrc has paths for java/zookeeper/kafka set, if already set in one machine, scp .bashrc to other machines
-hdu$c1>scp .bashrc hdu@c2:/home/hdu
-hdu$c2>scp .bashrc hdu@c3:/home/hdu
+elk$c1>scp .bashrc elk@c2:/home/elk
+elk$c2>scp .bashrc elk@c3:/home/elk
 
 #if not then update..
 $vi .bashrc
@@ -155,8 +155,8 @@ $vi zoo.cfg
 #remember to copy zoo.cfg to /usr/local/zookeeper/conf/ in each machine or edit manually
 #note you are in /usr/local/zookeeper/conf
 
-hdu$c1>scp zoo.cfg hdu$c2:/usr/local/zookeeper/conf/
-hdu$c1>scp zoo.cfg hdu$c3:/usr/local/zookeeper/conf/
+elk$c1>scp zoo.cfg elk$c2:/usr/local/zookeeper/conf/
+elk$c1>scp zoo.cfg elk$c3:/usr/local/zookeeper/conf/
 
 #on each node..
 $cd /usr/local/zookeeper
