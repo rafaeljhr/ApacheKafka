@@ -320,10 +320,23 @@ usa
 canada
 ^CProcessed a total of 14 messages
 
+[elk@c1 ~]$ kafka-topics.sh --create --topic BankData --partitions 3 --replication-factor 3 --bootstrap-server c1:9092
+[elk@c1 ~]$ kafka-console-producer.sh --topic BankData --broker-list c1:9092 < bankres.csv
+[elk@c1 ~]$ kafka-console-consumer.sh --topic BankData --from-beginning --bootstrap-server c1:9092
+
+kafka-topics.sh --create --topic PrimerData --partitions 3 --replication-factor 3 --bootstrap-server c1:9092
+kafka-console-producer.sh --topic PrimerData --broker-list c1:9092 < /home/elk/Downloads/primer-dataset.json
+kafka-console-consumer.sh --topic PrimerData --bootstrap-server c1:9092 --from-beginning
+#other option specifying serializer
+kafka-console-producer.sh --topic PrimerData --broker-list c1:9092 --property value.serializer=custom.class.serialization.JsonSerializer < /home/elk/Downloads/primer-dataset.json
+
 hdu@m1:~$ kafka-consumer-groups.sh --bootstrap-server m1:9092 --list
 console-consumer-56780
 my-group
 
+
+kafka-console-consumer.sh --topic Topic1 --from-beginning --bootstrap-server c1:9092 --group grp1 --reset-offsets --to-earliest
+kafka-consumer-groups.sh --topic Topic1 --bootstrap-server c1:9092 --group grp1 --reset-offsets --to-earliest
 hdu@m1:~$ kafka-console-consumer.sh --bootstrap-server m1:9092 --topic topic6 --from-beginning --group countries
 australia
 dubai

@@ -4,7 +4,7 @@ For example: kafka_2.13-2.8.0
 
 Edit zookeeper.properties in C:\kafka\config
 # the directory where the snapshot is stored.
-dataDir=C:\\Users\\AJ\\Downloads\\tmp2\\zookeeper
+dataDir=/tmp/zookeeper
 # the port at which the clients will connect
 clientPort=2181
 
@@ -13,7 +13,7 @@ C:\kafka\bin\windows>zookeeper-server-start.bat ..\..\config\zookeeper.propertie
 
 #kafka will connect to embedded zookeeper,thus no changes required to
 server.properties in C:\kafka\config
-
+:\kafka\bin\windows>kafka-server-start.bat ..\..\config\server.properties
 #Testing kafka
 C:\kafka\bin\windows>kafka-topics.bat --list --bootstrap-server localhost:9092
 
