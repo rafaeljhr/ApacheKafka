@@ -1,9 +1,9 @@
-hdu@m1:~$ echo dump | nc m1 2181 | grep brokers
+elk@c1:~$ echo dump | nc c1 2181 | grep brokers
 	/brokers/ids/3
 	/brokers/ids/2
 	/brokers/ids/1
 
-hdu@m1:~$ echo dump | nc m1 2181
+elk@c1:~$ echo dump | nc c1 2181
 SessionTracker dump:
 org.apache.zookeeper.server.quorum.LearnerSessionTracker@329b0ee
 ephemeral nodes dump:
@@ -16,101 +16,101 @@ Sessions with Ephemerals (3):
 	/controller
 	/brokers/ids/1
 
-hdu@m1:~$ kafka-topics.sh --create --topic topic1 --bootstrap-server m1:9092 --partitions 1 --replication-factor 1
+elk@c1:~$ kafka-topics.sh --create --topic topic1 --bootstrap-server c1:9092 --partitions 1 --replication-factor 1
 
-hdu@m1:~$ kafka-topics.sh --list --bootstrap-server m1:9092
+elk@c1:~$ kafka-topics.sh --list --bootstrap-server c1:9092
 topic1
 
-hdu@m1:~$ kafka-topics.sh --bootstrap-server m1:9092 --describe --topic topic1
+elk@c1:~$ kafka-topics.sh --bootstrap-server c1:9092 --describe --topic topic1
 Topic:topic1	PartitionCount:1	ReplicationFactor:1	Configs:segment.bytes=1073741824
 	Topic: topic1	Partition: 0	Leader: 2	Replicas: 2	Isr: 2
 
-hdu@m1:~$ kafka-topics.sh --create --topic topic2 --bootstrap-server m1:9092 --partitions 1 --replication-factor 1
+elk@c1:~$ kafka-topics.sh --create --topic topic2 --bootstrap-server c1:9092 --partitions 1 --replication-factor 1
 
-hdu@m1:~$ kafka-topics.sh --bootstrap-server m1:9092 --describe --topic topic2
+elk@c1:~$ kafka-topics.sh --bootstrap-server c1:9092 --describe --topic topic2
 Topic:topic2	PartitionCount:1	ReplicationFactor:1	Configs:segment.bytes=1073741824
 	Topic: topic2	Partition: 0	Leader: 1	Replicas: 1	Isr: 1
 
-hdu@m1:~$ kafka-topics.sh --list --bootstrap-server m1:9092
+elk@c1:~$ kafka-topics.sh --list --bootstrap-server c1:9092
 topic1
 topic2
 
-hdu@m1:~$ kafka-topics.sh --create --topic topic3 --bootstrap-server m1:9092 --partitions 1 --replication-factor 1
+elk@c1:~$ kafka-topics.sh --create --topic topic3 --bootstrap-server c1:9092 --partitions 1 --replication-factor 1
 
-hdu@m1:~$ kafka-topics.sh --list --bootstrap-server m1:9092
+elk@c1:~$ kafka-topics.sh --list --bootstrap-server c1:9092
 topic1
 topic2
 topic3
 
-hdu@m1:~$ kafka-topics.sh --bootstrap-server m1:9092 --describe --topic topic3
+elk@c1:~$ kafka-topics.sh --bootstrap-server c1:9092 --describe --topic topic3
 Topic:topic3	PartitionCount:1	ReplicationFactor:1	Configs:segment.bytes=1073741824
 	Topic: topic3	Partition: 0	Leader: 1	Replicas: 1	Isr: 1
 
-hdu@m1:~$ kafka-topics.sh --create --topic topic4 --bootstrap-server m1:9092 --partitions 1 --replication-factor 3
+elk@c1:~$ kafka-topics.sh --create --topic topic4 --bootstrap-server c1:9092 --partitions 1 --replication-factor 3
 
-hdu@m1:~$ kafka-topics.sh --list --bootstrap-server m1:9092
+elk@c1:~$ kafka-topics.sh --list --bootstrap-server c1:9092
 topic1
 topic2
 topic3
 topic4
 
-hdu@m1:~$ kafka-topics.sh --bootstrap-server m1:9092 --describe --topic topic4
+elk@c1:~$ kafka-topics.sh --bootstrap-server c1:9092 --describe --topic topic4
 Topic:topic4	PartitionCount:1	ReplicationFactor:3	Configs:segment.bytes=1073741824
 	Topic: topic4	Partition: 0	Leader: 2	Replicas: 2,3,1	Isr: 2,3,1
 
-hdu@m3:~$ ls /tmp/kafka-logs/
+elk@c3:~$ ls /tmp/kafka-logs/
 cleaner-offset-checkpoint  log-start-offset-checkpoint  meta.properties  recovery-point-offset-checkpoint  replication-offset-checkpoint  topic4-0
-hdu@m3:~$ logout
-Connection to m3 closed.
+elk@c3:~$ logout
+Connection to c3 closed.
 
-hdu@m2:~$ ls /tmp/kafka-logs/
+elk@c2:~$ ls /tmp/kafka-logs/
 cleaner-offset-checkpoint  log-start-offset-checkpoint  meta.properties  recovery-point-offset-checkpoint  replication-offset-checkpoint  topic1-0  topic4-0
-hdu@m2:~$ logout
-Connection to m2 closed.
+elk@c2:~$ logout
+Connection to c2 closed.
 
-hdu@m1:~$ ls /tmp/kafka-logs/
+elk@c1:~$ ls /tmp/kafka-logs/
 cleaner-offset-checkpoint  log-start-offset-checkpoint  meta.properties  recovery-point-offset-checkpoint  replication-offset-checkpoint  topic2-0  topic3-0  topic4-0
 
 #testing replication
-hdu@m1:~$ kafka-topics.sh --create --topic topic5 --bootstrap-server m1:9092 --partitions 1 --replication-factor 2
-hdu@m1:~$ kafka-topics.sh --bootstrap-server m1:9092 --describe --topic topic5
+elk@c1:~$ kafka-topics.sh --create --topic topic5 --bootstrap-server c1:9092 --partitions 1 --replication-factor 2
+elk@c1:~$ kafka-topics.sh --bootstrap-server c1:9092 --describe --topic topic5
 Topic:topic5	PartitionCount:1	ReplicationFactor:2	Configs:segment.bytes=1073741824
 	Topic: topic5	Partition: 0	Leader: 2	Replicas: 2,3	Isr: 2,3
 
-hdu@m1:~$ #kill broker-2
-hdu@m1:~$ kafka-topics.sh --bootstrap-server m1:9092 --describe --topic topic5
+elk@c1:~$ #kill broker-2
+elk@c1:~$ kafka-topics.sh --bootstrap-server c1:9092 --describe --topic topic5
 Topic:topic5	PartitionCount:1	ReplicationFactor:2	Configs:segment.bytes=1073741824
 	Topic: topic5	Partition: 0	Leader: 3	Replicas: 2,3	Isr: 3
-hdu@m1:~$ kafka-topics.sh --bootstrap-server m1:9092 --describe --topic topic5
+elk@c1:~$ kafka-topics.sh --bootstrap-server c1:9092 --describe --topic topic5
 Topic:topic5	PartitionCount:1	ReplicationFactor:2	Configs:segment.bytes=1073741824
 	Topic: topic5	Partition: 0	Leader: 3	Replicas: 2,3	Isr: 3
-hdu@m1:~$ kafka-topics.sh --bootstrap-server m1:9092 --describe --topic topic5
+elk@c1:~$ kafka-topics.sh --bootstrap-server c1:9092 --describe --topic topic5
 Topic:topic5	PartitionCount:1	ReplicationFactor:2	Configs:segment.bytes=1073741824
 	Topic: topic5	Partition: 0	Leader: 3	Replicas: 2,3	Isr: 3
-hdu@m1:~$ kafka-topics.sh --bootstrap-server m1:9092 --describe --topic topic5
+elk@c1:~$ kafka-topics.sh --bootstrap-server c1:9092 --describe --topic topic5
 Topic:topic5	PartitionCount:1	ReplicationFactor:2	Configs:segment.bytes=1073741824
 	Topic: topic5	Partition: 0	Leader: 3	Replicas: 2,3	Isr: 3
-hdu@m1:~$ kafka-topics.sh --bootstrap-server m1:9092 --describe --topic topic5
+elk@c1:~$ kafka-topics.sh --bootstrap-server c1:9092 --describe --topic topic5
 Topic:topic5	PartitionCount:1	ReplicationFactor:2	Configs:segment.bytes=1073741824
 	Topic: topic5	Partition: 0	Leader: 3	Replicas: 2,3	Isr: 3
-hdu@m1:~$ kafka-topics.sh --bootstrap-server m1:9092 --describe --topic topic5
+elk@c1:~$ kafka-topics.sh --bootstrap-server c1:9092 --describe --topic topic5
 Topic:topic5	PartitionCount:1	ReplicationFactor:2	Configs:segment.bytes=1073741824
 	Topic: topic5	Partition: 0	Leader: 3	Replicas: 2,3	Isr: 3
-hdu@m1:~$ kafka-topics.sh --bootstrap-server m1:9092 --describe --topic topic5
+elk@c1:~$ kafka-topics.sh --bootstrap-server c1:9092 --describe --topic topic5
 Topic:topic5	PartitionCount:1	ReplicationFactor:2	Configs:segment.bytes=1073741824
 	Topic: topic5	Partition: 0	Leader: 3	Replicas: 2,3	Isr: 3
 
 #start broker-2
-hdu@m1:~$ kafka-topics.sh --bootstrap-server m1:9092 --describe --topic topic5
+elk@c1:~$ kafka-topics.sh --bootstrap-server c1:9092 --describe --topic topic5
 Topic:topic5	PartitionCount:1	ReplicationFactor:2	Configs:segment.bytes=1073741824
 	Topic: topic5	Partition: 0	Leader: 3	Replicas: 2,3	Isr: 3,2
 
 #producing & consuming data, then checking offsets
-hdu@m1:~$ kafka-topics.sh --bootstrap-server m1:9092 --describe --topic topic4
+elk@c1:~$ kafka-topics.sh --bootstrap-server c1:9092 --describe --topic topic4
 Topic:topic4	PartitionCount:1	ReplicationFactor:3	Configs:segment.bytes=1073741824
 	Topic: topic4	Partition: 0	Leader: 2	Replicas: 2,3,1	Isr: 3,1,2
 
-hdu@m1:~$ kafka-console-producer.sh --topic topic4 --broker-list m1:9092,m2:9092,m3:9092
+elk@c1:~$ kafka-console-producer.sh --topic topic4 --broker-list c1:9092,c2:9092,c3:9092
 >chicago 
 >newyork
 >dallas
@@ -118,24 +118,24 @@ hdu@m1:~$ kafka-console-producer.sh --topic topic4 --broker-list m1:9092,m2:9092
 >chicago
 >dallas
 
->^Chdu@m1:~$ ls /tmp/kafka-logs/
+>^Celk@c1:~$ ls /tmp/kafka-logs/
 cleaner-offset-checkpoint  log-start-offset-checkpoint  meta.properties  recovery-point-offset-checkpoint  replication-offset-checkpoint  topic2-0  topic3-0  topic4-0
 
-hdu@m1:~$ ls /tmp/kafka-logs/topic4-0/
+elk@c1:~$ ls /tmp/kafka-logs/topic4-0/
 00000000000000000000.index  00000000000000000000.log  00000000000000000000.timeindex  leader-epoch-checkpoint
 
-hdu@m1:~$ vi /tmp/kafka-logs/topic4-0/00000000000000000000.log 
+elk@c1:~$ vi /tmp/kafka-logs/topic4-0/00000000000000000000.log 
 
 --use the GetOffsetShell class to check the beginning and ending offset of a topic's partition.
-hdu@m1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list m1:9092 --topic topic4 
+elk@c1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list c1:9092 --topic topic4 
 topic4:0:6
 
 --to check the end offset set the time parameter to -1
-hdu@m1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list m1:9092 --topic topic4 --time -1
+elk@c1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list c1:9092 --topic topic4 --time -1
 topic4:0:6
 
 --to check the start offset set the time parameter to -2
-hdu@m1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list m1:9092 --topic topic4 --time -2
+elk@c1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list c1:9092 --topic topic4 --time -2
 topic4:0:0
 
 #deleting records(some/all) from a topic
@@ -158,21 +158,21 @@ vi delete-records.json
 
 For example:
 --after creating a json file
-hdu@m1:~$ kafka-delete-records.sh --bootstrap-server m1:9092 --offset-json-file delete-records.json 
+elk@c1:~$ kafka-delete-records.sh --bootstrap-server c1:9092 --offset-json-file delete-records.json 
 Executing records delete operation
 Records delete operation completed:
 partition: topic4-0	low_watermark: 2
 
-hdu@m1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list m1:9092 --topic topic4
+elk@c1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list c1:9092 --topic topic4
 topic4:0:6
 
-hdu@m1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list m1:9092 --topic topic4 --time -2
+elk@c1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list c1:9092 --topic topic4 --time -2
 topic4:0:2
 
-hdu@m1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list m1:9092 --topic topic4 --time -1
+elk@c1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list c1:9092 --topic topic4 --time -1
 topic4:0:6
 
-hdu@m1:~$ kafka-console-consumer.sh --topic topic4 --bootstrap-server m1:9092 --from-beginning
+elk@c1:~$ kafka-console-consumer.sh --topic topic4 --bootstrap-server c1:9092 --from-beginning
 dallas
 texas
 chicago
@@ -184,48 +184,48 @@ dallas
 --here we have to wait for broker to remove all the records from topic and then set topic retention to original value
 
 --set retention.ms to 100 milliseconds
-kafka-configs --zookeeper m1:2181 --entity-type topics --entity-name topic4 --alter --add-config retention.ms=100
+kafka-configs --zookeeper c1:2181 --entity-type topics --entity-name topic4 --alter --add-config retention.ms=100
 
 --wait for brokers to clean up and then check start and end offset
 
 --set retention.ms to its original value
 
 for example:
-hdu@m1:~$ kafka-configs.sh --zookeeper m1:2181 --entity-type topics --entity-name topic4 --alter --add-config retention.ms=100
+elk@c1:~$ kafka-configs.sh --zookeeper c1:2181 --entity-type topics --entity-name topic4 --alter --add-config retention.ms=100
 Completed Updating config for entity: topic 'topic4'.
-hdu@m1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list m1:9092 --topic topic4
+elk@c1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list c1:9092 --topic topic4
 topic4:0:6
-hdu@m1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list m1:9092 --topic topic4
+elk@c1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list c1:9092 --topic topic4
 topic4:0:6
-hdu@m1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list m1:9092 --topic topic4 --time -1
+elk@c1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list c1:9092 --topic topic4 --time -1
 topic4:0:6
-hdu@m1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list m1:9092 --topic topic4 --time -2
+elk@c1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list c1:9092 --topic topic4 --time -2
 topic4:0:2
-hdu@m1:~$ kafka-console-consumer.sh --topic topic4 --bootstrap-server m1:9092 --from-beginning
+elk@c1:~$ kafka-console-consumer.sh --topic topic4 --bootstrap-server c1:9092 --from-beginning
 dallas
 texas
 chicago
 dallas
 ^CProcessed a total of 4 messages
-hdu@m1:~$ kafka-console-consumer.sh --topic topic4 --bootstrap-server m1:9092 --from-beginning
+elk@c1:~$ kafka-console-consumer.sh --topic topic4 --bootstrap-server c1:9092 --from-beginning
 ^CProcessed a total of 0 messages
-hdu@m1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list m1:9092 --topic topic4 --time -2
+elk@c1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list c1:9092 --topic topic4 --time -2
 topic4:0:6
-hdu@m1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list m1:9092 --topic topic4 --time -1
+elk@c1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list c1:9092 --topic topic4 --time -1
 topic4:0:6
-hdu@m1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list m1:9092 --topic topic4
+elk@c1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list c1:9092 --topic topic4
 topic4:0:6
 
-hdu@m1:~$ kafka-configs.sh --zookeeper m1:2181 --entity-type topics --entity-name topic4 --alter --add-config retention.ms=<ORIGINAL VALUE>
+elk@c1:~$ kafka-configs.sh --zookeeper c1:2181 --entity-type topics --entity-name topic4 --alter --add-config retention.ms=<ORIGINAL VALUE>
 or
-hdu@m1:~$ kafka-configs.sh --zookeeper m1:2181 --entity-type topics --entity-name topic4 --alter --delete-config retention.ms
+elk@c1:~$ kafka-configs.sh --zookeeper c1:2181 --entity-type topics --entity-name topic4 --alter --delete-config retention.ms
 Completed Updating config for entity: topic 'topic4'.
 
 #working with a topic that has multiple partitions
-hdu@m1:~$ kafka-topics.sh --create --topic topic6 --bootstrap-server m1:9092 --partitions 3 --replication-factor 3
+elk@c1:~$ kafka-topics.sh --create --topic topic6 --bootstrap-server c1:9092 --partitions 3 --replication-factor 3
 
-hdu@m1:~$ #producing data to any partition 
-hdu@m1:~$ kafka-console-producer.sh --topic topic6 --broker-list m1:9092,m2:9092,m3:9092
+elk@c1:~$ #producing data to any partition 
+elk@c1:~$ kafka-console-producer.sh --topic topic6 --broker-list c1:9092,c2:9092,c3:9092
 >america
 >india
 >australia
@@ -233,36 +233,36 @@ hdu@m1:~$ kafka-console-producer.sh --topic topic6 --broker-list m1:9092,m2:9092
 >canada
 >dubai
 
-hdu@m1:~$ kafka-topics.sh --topic topic6 --bootstrap-server m1:9092 --describe
+elk@c1:~$ kafka-topics.sh --topic topic6 --bootstrap-server c1:9092 --describe
 Topic:topic6	PartitionCount:3	ReplicationFactor:3	Configs:segment.bytes=1073741824
 	Topic: topic6	Partition: 0	Leader: 1	Replicas: 1,3,2	Isr: 1,3,2
 	Topic: topic6	Partition: 1	Leader: 2	Replicas: 2,1,3	Isr: 2,1,3
 	Topic: topic6	Partition: 2	Leader: 3	Replicas: 3,2,1	Isr: 3,2,1
 
-hdu@m1:~$ kafka-console-consumer.sh --topic topic6 --bootstrap-server m1:9092 --partition 0 --from-beginning
+elk@c1:~$ kafka-console-consumer.sh --topic topic6 --bootstrap-server c1:9092 --partition 0 --from-beginning
 australia
 dubai
 ^CProcessed a total of 2 messages
-hdu@m1:~$ kafka-console-consumer.sh --topic topic6 --bootstrap-server m1:9092 --partition 1 --from-beginning
+elk@c1:~$ kafka-console-consumer.sh --topic topic6 --bootstrap-server c1:9092 --partition 1 --from-beginning
 india
 canada
 ^CProcessed a total of 2 messages
-hdu@m1:~$ kafka-console-consumer.sh --topic topic6 --bootstrap-server m1:9092 --partition 2 --from-beginning
+elk@c1:~$ kafka-console-consumer.sh --topic topic6 --bootstrap-server c1:9092 --partition 2 --from-beginning
 america
 germany
 ^CProcessed a total of 2 messages
 
-hdu@m1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list m1:9092 --topic topic6 --partitions 0
+elk@c1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list c1:9092 --topic topic6 --partitions 0
 topic6:0:2
-hdu@m1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list m1:9092 --topic topic6 --partitions 1
+elk@c1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list c1:9092 --topic topic6 --partitions 1
 topic6:1:2
-hdu@m1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list m1:9092 --topic topic6 --partitions 2
+elk@c1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list c1:9092 --topic topic6 --partitions 2
 topic6:2:2
 
 #sending data to specific partition
 --in addition to existing data in topic and its partitions, now we can send data with similar keys to same partition
 
-hdu@m1:~$ kafka-console-producer.sh --topic topic6 --broker-list m1:9092,m2:9092,m3:9092 --property "parse.key=true" --property "key.separator=:"
+elk@c1:~$ kafka-console-producer.sh --topic topic6 --broker-list c1:9092,c2:9092,c3:9092 --property "parse.key=true" --property "key.separator=:"
 >asia:india
 >asia:bangladesh
 >asia:singapore
@@ -272,19 +272,19 @@ hdu@m1:~$ kafka-console-producer.sh --topic topic6 --broker-list m1:9092,m2:9092
 >europe:france
 >europe:italy
 
-hdu@m1:kafka-console-consumer.sh --topic topic6 --bootstrap-server m1:9092 --partition 0 --from-beginning
+elk@c1:kafka-console-consumer.sh --topic topic6 --bootstrap-server c1:9092 --partition 0 --from-beginning
 australia
 dubai
 Processed a total of 2 messages
 
-hdu@m1:~$ kafka-console-consumer.sh --topic topic6 --bootstrap-server m1:9092 --partition 1 --from-beginning
+elk@c1:~$ kafka-console-consumer.sh --topic topic6 --bootstrap-server c1:9092 --partition 1 --from-beginning
 india
 canada
 usa
 canada
 Processed a total of 4 messages
 
-hdu@m1:~$ kafka-console-consumer.sh --topic topic6 --bootstrap-server m1:9092 --partition 2 --from-beginning
+elk@c1:~$ kafka-console-consumer.sh --topic topic6 --bootstrap-server c1:9092 --partition 2 --from-beginning
 america
 germany
 india
@@ -297,13 +297,13 @@ Processed a total of 8 messages
 
 
 #looking into consumer groups
-kafka-consumer-groups.sh --bootstrap-server m1:9092 --list
+kafka-consumer-groups.sh --bootstrap-server c1:9092 --list
 
 #creating consumer group while reading using a consumer
-hdu@m1:~$ kafka-consumer-groups.sh --bootstrap-server m1:9092 --list
+elk@c1:~$ kafka-consumer-groups.sh --bootstrap-server c1:9092 --list
 my-group
 
-hdu@m1:~$ kafka-console-consumer.sh --bootstrap-server m1:9092 --topic topic6 --from-beginning
+elk@c1:~$ kafka-console-consumer.sh --bootstrap-server c1:9092 --topic topic6 --from-beginning
 australia
 dubai
 america
@@ -327,17 +327,23 @@ canada
 kafka-topics.sh --create --topic PrimerData --partitions 3 --replication-factor 3 --bootstrap-server c1:9092
 kafka-console-producer.sh --topic PrimerData --broker-list c1:9092 < /home/elk/Downloads/primer-dataset.json
 kafka-console-consumer.sh --topic PrimerData --bootstrap-server c1:9092 --from-beginning
-#other option specifying serializer
-kafka-console-producer.sh --topic PrimerData --broker-list c1:9092 --property value.serializer=custom.class.serialization.JsonSerializer < /home/elk/Downloads/primer-dataset.json
 
-hdu@m1:~$ kafka-consumer-groups.sh --bootstrap-server m1:9092 --list
+#other option specifying serializer
+C:\Users\Win10\Downloads\kafka\kafka_2.11-2.2.1\bin\windows>kafka-console-producer.bat --topic primerdata --broker-list localhost:9092 --property 
+value-serializer="import org.apache.kafka.connect.json.JsonSerializer" < I:\\GitContent\\Datasets\\Datasets\\employees.json
+
+C:\Users\Win10\Downloads\kafka\kafka_2.11-2.2.1\bin\windows>kafka-console-consumer.bat --topic primerdata 
+--bootstrap-server localhost:9092 --property value-serializer="org.springframework.kafka.support.serializer.JsonDeserializer" --from-beginning
+{"name":"Michael", "salary":3000}
+
+#command below shows our created consumer groups and which were created whenever a console-consumer runs.
+elk@c1:~$ kafka-consumer-groups.sh --bootstrap-server c1:9092 --list
 console-consumer-56780
 my-group
 
 
-kafka-console-consumer.sh --topic Topic1 --from-beginning --bootstrap-server c1:9092 --group grp1 --reset-offsets --to-earliest
 kafka-consumer-groups.sh --topic Topic1 --bootstrap-server c1:9092 --group grp1 --reset-offsets --to-earliest
-hdu@m1:~$ kafka-console-consumer.sh --bootstrap-server m1:9092 --topic topic6 --from-beginning --group countries
+elk@c1:~$ kafka-console-consumer.sh --bootstrap-server c1:9092 --topic topic6 --from-beginning --group countries
 australia
 dubai
 america
@@ -354,7 +360,7 @@ usa
 canada
 ^CProcessed a total of 14 messages
 
-hdu@m1:~$ kafka-consumer-groups.sh --bootstrap-server m1:9092 --list
+elk@c1:~$ kafka-consumer-groups.sh --bootstrap-server c1:9092 --list
 console-consumer-56780
 my-group
 countries
