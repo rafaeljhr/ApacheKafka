@@ -1,3 +1,4 @@
+#Running with a standalone cluster
 #testing kafka streams demo application
 #code here in :
 https://github.com/a0x8o/kafka/blob/master/streams/examples/src/main/java/org/apache/kafka/streams/examples/wordcount/WordCountDemo.java
@@ -8,7 +9,7 @@ https://github.com/a0x8o/kafka/blob/master/streams/examples/src/main/java/org/ap
 #to test this demo streaming application setup a standalone or setup a kafka stream application using IDE and edit 'streamConfigs' Pointing to your kafka cluster
 
 #creating topic for input
-hdu@m1:~$ kafka-topics.sh --create     --bootstrap-server m1:9092     --replication-factor 3     --partitions 3 --topic streams-plaintext-input
+hdu@m1:~$ kafka-topics.sh --create     --bootstrap-server localhost:9092     --replication-factor 3     --partitions 3 --topic streams-plaintext-input
 hdu@m1:~$ kafka-topics.sh --list --bootstrap-server m1:9092
 __consumer_offsets
 streams-plaintext-input
@@ -20,8 +21,8 @@ topic5
 topic6
 
 #creating topic for wordcount output
-hdu@m1:~$ kafka-topics.sh --create     --bootstrap-server m1:9092     --replication-factor 3     --partitions 3 --topic streams-wordcount-output  --config cleanup.policy=compact 
-hdu@m1:~$ kafka-topics.sh --list --bootstrap-server m1:9092
+hdu@m1:~$ kafka-topics.sh --create     --bootstrap-server localhost:9092     --replication-factor 3     --partitions 3 --topic streams-wordcount-output  --config cleanup.policy=compact 
+hdu@m1:~$ kafka-topics.sh --list --bootstrap-server localhost:9092
 __consumer_offsets
 streams-plaintext-input
 streams-wordcount-output
@@ -32,7 +33,7 @@ topic4
 topic5
 topic6
 
-hdu@m1:~$ kafka-topics.sh --bootstrap-server m1:9092 --describe 
+hdu@m1:~$ kafka-topics.sh --bootstrap-server localhost:9092 --describe 
 Topic:topic1	PartitionCount:1	ReplicationFactor:1	Configs:segment.bytes=1073741824
 	Topic: topic1	Partition: 0	Leader: 2	Replicas: 2	Isr: 2
 Topic:topic2	PartitionCount:1	ReplicationFactor:1	Configs:segment.bytes=1073741824
@@ -55,57 +56,6 @@ Topic:streams-wordcount-output	PartitionCount:3	ReplicationFactor:3	Configs:clea
 	Topic: streams-wordcount-output	Partition: 0	Leader: 3	Replicas: 3,1,2	Isr: 3,1,2
 	Topic: streams-wordcount-output	Partition: 1	Leader: 1	Replicas: 1,2,3	Isr: 1,2,3
 	Topic: streams-wordcount-output	Partition: 2	Leader: 2	Replicas: 2,3,1	Isr: 2,3,1
-Topic:__consumer_offsets	PartitionCount:50	ReplicationFactor:1	Configs:compression.type=producer,cleanup.policy=compact,segment.bytes=104857600
-	Topic: __consumer_offsets	Partition: 0	Leader: 1	Replicas: 1	Isr: 1
-	Topic: __consumer_offsets	Partition: 1	Leader: 2	Replicas: 2	Isr: 2
-	Topic: __consumer_offsets	Partition: 2	Leader: 3	Replicas: 3	Isr: 3
-	Topic: __consumer_offsets	Partition: 3	Leader: 1	Replicas: 1	Isr: 1
-	Topic: __consumer_offsets	Partition: 4	Leader: 2	Replicas: 2	Isr: 2
-	Topic: __consumer_offsets	Partition: 5	Leader: 3	Replicas: 3	Isr: 3
-	Topic: __consumer_offsets	Partition: 6	Leader: 1	Replicas: 1	Isr: 1
-	Topic: __consumer_offsets	Partition: 7	Leader: 2	Replicas: 2	Isr: 2
-	Topic: __consumer_offsets	Partition: 8	Leader: 3	Replicas: 3	Isr: 3
-	Topic: __consumer_offsets	Partition: 9	Leader: 1	Replicas: 1	Isr: 1
-	Topic: __consumer_offsets	Partition: 10	Leader: 2	Replicas: 2	Isr: 2
-	Topic: __consumer_offsets	Partition: 11	Leader: 3	Replicas: 3	Isr: 3
-	Topic: __consumer_offsets	Partition: 12	Leader: 1	Replicas: 1	Isr: 1
-	Topic: __consumer_offsets	Partition: 13	Leader: 2	Replicas: 2	Isr: 2
-	Topic: __consumer_offsets	Partition: 14	Leader: 3	Replicas: 3	Isr: 3
-	Topic: __consumer_offsets	Partition: 15	Leader: 1	Replicas: 1	Isr: 1
-	Topic: __consumer_offsets	Partition: 16	Leader: 2	Replicas: 2	Isr: 2
-	Topic: __consumer_offsets	Partition: 17	Leader: 3	Replicas: 3	Isr: 3
-	Topic: __consumer_offsets	Partition: 18	Leader: 1	Replicas: 1	Isr: 1
-	Topic: __consumer_offsets	Partition: 19	Leader: 2	Replicas: 2	Isr: 2
-	Topic: __consumer_offsets	Partition: 20	Leader: 3	Replicas: 3	Isr: 3
-	Topic: __consumer_offsets	Partition: 21	Leader: 1	Replicas: 1	Isr: 1
-	Topic: __consumer_offsets	Partition: 22	Leader: 2	Replicas: 2	Isr: 2
-	Topic: __consumer_offsets	Partition: 23	Leader: 3	Replicas: 3	Isr: 3
-	Topic: __consumer_offsets	Partition: 24	Leader: 1	Replicas: 1	Isr: 1
-	Topic: __consumer_offsets	Partition: 25	Leader: 2	Replicas: 2	Isr: 2
-	Topic: __consumer_offsets	Partition: 26	Leader: 3	Replicas: 3	Isr: 3
-	Topic: __consumer_offsets	Partition: 27	Leader: 1	Replicas: 1	Isr: 1
-	Topic: __consumer_offsets	Partition: 28	Leader: 2	Replicas: 2	Isr: 2
-	Topic: __consumer_offsets	Partition: 29	Leader: 3	Replicas: 3	Isr: 3
-	Topic: __consumer_offsets	Partition: 30	Leader: 1	Replicas: 1	Isr: 1
-	Topic: __consumer_offsets	Partition: 31	Leader: 2	Replicas: 2	Isr: 2
-	Topic: __consumer_offsets	Partition: 32	Leader: 3	Replicas: 3	Isr: 3
-	Topic: __consumer_offsets	Partition: 33	Leader: 1	Replicas: 1	Isr: 1
-	Topic: __consumer_offsets	Partition: 34	Leader: 2	Replicas: 2	Isr: 2
-	Topic: __consumer_offsets	Partition: 35	Leader: 3	Replicas: 3	Isr: 3
-	Topic: __consumer_offsets	Partition: 36	Leader: 1	Replicas: 1	Isr: 1
-	Topic: __consumer_offsets	Partition: 37	Leader: 2	Replicas: 2	Isr: 2
-	Topic: __consumer_offsets	Partition: 38	Leader: 3	Replicas: 3	Isr: 3
-	Topic: __consumer_offsets	Partition: 39	Leader: 1	Replicas: 1	Isr: 1
-	Topic: __consumer_offsets	Partition: 40	Leader: 2	Replicas: 2	Isr: 2
-	Topic: __consumer_offsets	Partition: 41	Leader: 3	Replicas: 3	Isr: 3
-	Topic: __consumer_offsets	Partition: 42	Leader: 1	Replicas: 1	Isr: 1
-	Topic: __consumer_offsets	Partition: 43	Leader: 2	Replicas: 2	Isr: 2
-	Topic: __consumer_offsets	Partition: 44	Leader: 3	Replicas: 3	Isr: 3
-	Topic: __consumer_offsets	Partition: 45	Leader: 1	Replicas: 1	Isr: 1
-	Topic: __consumer_offsets	Partition: 46	Leader: 2	Replicas: 2	Isr: 2
-	Topic: __consumer_offsets	Partition: 47	Leader: 3	Replicas: 3	Isr: 3
-	Topic: __consumer_offsets	Partition: 48	Leader: 1	Replicas: 1	Isr: 1
-	Topic: __consumer_offsets	Partition: 49	Leader: 2	Replicas: 2	Isr: 2
 
 #if stand alone cluster
 kafka-run-class.sh org.apache.kafka.streams.examples.wordcount.WordCountDemo
@@ -131,4 +81,7 @@ refer:https://kafka.apache.org/25/documentation/streams/quickstart
 
 
 --------------------
+#running on a distributed cluster
+--Follow instructions in 'Running_streaming_app.txt'
+--An already ready to use jar can be found in this folder
 
