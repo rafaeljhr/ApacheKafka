@@ -1,0 +1,20 @@
+#Create springboot application project
+#Delete the main application which gets created
+#Add wordcount demo from github link and edit the code
+(github link is provided in 'Testing_n_working_cluster2.txt' 
+#do a maven install (to create jar)
+#copy the jar file or download it from here
+#create topics (as mentioned in 'Testing_n_working_cluster2.txt')
+
+Step1: from within your cluster
+     -- $java -jar streamsapp-0.0.1-SNAPSHOT.jar
+     -- This starts your streaming wordcount application
+
+Step2: Start Producer
+        $kafka-console-producer.sh --broker-list c1:9092 --topic streams-plaintext-input
+
+Step 3: Start Consumer
+	$kafka-console-consumer.sh --bootstrap-server c1:9092     --topic streams-wordcount-output     --from-beginning     --formatter kafka.tools.DefaultMessageFormatter     --property print.key=true     --property print.value=true     --property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer --property value.deserializer=org.apache.kafka.common.serialization.LongDeserializer
+
+#confirm if streaming app does the wordcount
+
