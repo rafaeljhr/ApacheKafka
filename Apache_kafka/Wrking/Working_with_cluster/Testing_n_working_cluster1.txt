@@ -1,3 +1,4 @@
+#working with kafka cluster
 elk@c1:~$ echo dump | nc c1 2181 | grep brokers
 	/brokers/ids/3
 	/brokers/ids/2
