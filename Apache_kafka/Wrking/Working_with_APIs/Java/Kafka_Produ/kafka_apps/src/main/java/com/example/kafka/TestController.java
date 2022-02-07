@@ -15,7 +15,7 @@ public class TestController {
 
 	@Autowired
 	private KafkaTemplate<String, User> kafkaTemplate;
-	private static final String TOPIC = "Topic1";
+	private static final String TOPIC = "Topic2";
 	
 	@GetMapping("/publish/{name}")
 	public String post(@PathVariable("name") final String name) {
