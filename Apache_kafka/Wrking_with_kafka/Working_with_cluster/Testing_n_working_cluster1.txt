@@ -324,6 +324,8 @@ canada
 #all datasets used here can be found in 'https://github.com/ajaykuma/datasets'
 [elk@c1 ~]$ kafka-topics.sh --create --topic BankData --partitions 3 --replication-factor 3 --bootstrap-server c1:9092
 [elk@c1 ~]$ kafka-console-producer.sh --topic BankData --broker-list c1:9092 < bankres.csv
+> C:\Users\Win10\Downloads\kafka\kafka_2.11-2.2.1\bin\windows>kafka-console-producer.bat --topic Test1 --broker-list localhost:9092 < I:\\GitContent\\Datasets\\Datasets\\Superstore\\global_superstore_2016_v.csv
+
 [elk@c1 ~]$ kafka-console-consumer.sh --topic BankData --from-beginning --bootstrap-server c1:9092
 
 kafka-topics.sh --create --topic PrimerData --partitions 3 --replication-factor 3 --bootstrap-server c1:9092
@@ -366,4 +368,24 @@ elk@c1:~$ kafka-consumer-groups.sh --bootstrap-server c1:9092 --list
 console-consumer-56780
 my-group
 countries
+
+Other commands/options
+#look at configs which can be changed
+C:\Users\Win10\Downloads\kafka\kafka_2.11-2.2.1\bin\windows>kafka-configs.bat --zookeeper localhost:2181
+
+#looking to timeindex log
+C:\Users\Win10\Downloads\kafka\kafka_2.11-2.2.1\bin\windows>kafka-dump-log.bat --files C:\Users\Win10\Downloads\Java\Kafka_Prod_Consu_for_string2\Kafka_Project\tmp\kafka-logs\Test1-0\00000000000000000000.timeindex
+
+#performance test
+kafka-producer-perf-test.sh --topic Test2 --record-size 1024 --throughput -1 --num-records 1000000 --producer-props acks=all bootstrap.servers=n1:9092
+
+kafka-run-class.sh kafka.tools.EndToEndLatency n1:9092,n2:9092,n3:9092 Test2 10000 1 10000
+
+kafka-consumer-perm-test.sh --topic Test2 --broker-list n1:9092 --messages 1000000
+
+
+
+
+
+
 
