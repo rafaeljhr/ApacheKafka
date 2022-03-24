@@ -47,7 +47,7 @@ import java.util.concurrent.CountDownLatch;
  */
 public final class WordCountDemo {
 
-    public static final String INPUT_TOPIC = "streams-plaintext-input";
+    public static final String INPUT_TOPIC = "Topic1";
     public static final String OUTPUT_TOPIC = "streams-wordcount-output";
 
     static Properties getStreamsConfig(final String[] args) throws IOException {
