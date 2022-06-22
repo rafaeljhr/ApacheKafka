@@ -175,21 +175,29 @@ nif$n1>scp zoo.cfg nif@n3:/usr/local/zookeeper/conf/
 ---Note: More information about ZooKeper configuration settings can be found in the ZooKeeper Getting Started Guide.
 
 #on node1
+n1$zkServer.sh start
+>jps
 echo 1 > /tmp/zookeeper/myid
 #if zookeeper directory doesn't exist in /tmp, create it.
+n1$zkServer.sh start
+
 #on node2
+n2$zkServer.sh start
+>jps
 echo 2 > /tmp/zookeeper/myid
 #if zookeeper directory doesn't exist in /tmp, create it.
+n2$zkServer.sh start
+
 #on node3
+n3$zkServer.sh start
+jps
 echo 3 > /tmp/zookeeper/myid
 #if zookeeper directory doesn't exist in /tmp, create it.
+n2$zkServer.sh start
 
 ZooKeeper Startup
-Start up each ZooKeeper on each host
+check if ZooKeeper was started on each host
 
-n1$zkServer.sh start
-n2$zkServer.sh start
-n3$zkServer.sh start
 
 #check status of which peer acts as leader/follower
 $echo stat | nc n1 2181
