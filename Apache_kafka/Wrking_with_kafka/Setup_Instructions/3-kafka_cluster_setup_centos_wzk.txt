@@ -71,20 +71,20 @@ $ssh-keygen -t rsa -P ""
 
 2.Distributing ssh public keys to other machines
 ----------------------
-$nif$n1:ssh-copy-id -i $HOME/.ssh/id_rsa.pub nif@n2
-$nif$n1:ssh-copy-id -i $HOME/.ssh/id_rsa.pub nif@n3
-$nif$n2:ssh-copy-id -i $HOME/.ssh/id_rsa.pub nif@n1
-$nif$n2:ssh-copy-id -i $HOME/.ssh/id_rsa.pub nif@n3
-$nif$n3:ssh-copy-id -i $HOME/.ssh/id_rsa.pub nif@n1
-$nif$n3:ssh-copy-id -i $HOME/.ssh/id_rsa.pub nif@n2
+$nif@n1]:ssh-copy-id -i $HOME/.ssh/id_rsa.pub nif@n2]
+$nif@n1]:ssh-copy-id -i $HOME/.ssh/id_rsa.pub nif@n3]
+$nif@n2]:ssh-copy-id -i $HOME/.ssh/id_rsa.pub nif@n1]
+$nif@n2]:ssh-copy-id -i $HOME/.ssh/id_rsa.pub nif@n3]
+$nif@n3]:ssh-copy-id -i $HOME/.ssh/id_rsa.pub nif@n1]
+$nif@n3]:ssh-copy-id -i $HOME/.ssh/id_rsa.pub nif@n2]
 
 3.To enable SSH access to your local machine with this newly created key
 ----------------------------------------
 to add the xxxx@master’s public SSH key (which should be in $HOME/.ssh/id_rsa.pub) 
 to the authorized_keys file of xxxx@master(in this user’s $HOME/.ssh/authorized_keys)
-n1$cat $HOME/.ssh/id_rsa.pub >> $HOME/.ssh/authorized_keys
-n2$cat $HOME/.ssh/id_rsa.pub >> $HOME/.ssh/authorized_keys
-n3$cat $HOME/.ssh/id_rsa.pub >> $HOME/.ssh/authorized_keys
+nif@n1]cat $HOME/.ssh/id_rsa.pub >> $HOME/.ssh/authorized_keys
+nif@n2]cat $HOME/.ssh/id_rsa.pub >> $HOME/.ssh/authorized_keys
+nif@n3]cat $HOME/.ssh/id_rsa.pub >> $HOME/.ssh/authorized_keys
 
 Test your ssh access...
 
@@ -94,8 +94,8 @@ zookeeper-3.4.6.tar.gz
 
 ---Download on each node 
    or download on 1st node and then copy(scp) to each node 
-   [nif$n1>scp /home/nif/Downloads/zookeeper-3.4.6.tar.gz nif@n2:/home/nif/Downloads/]
-   [nif$n1>scp /home/nif/Downloads/zookeeper-3.4.6.tar.gz nif@n3:/home/nif/Downloads/]
+   [nif@n1]>scp /home/nif/Downloads/zookeeper-3.4.6.tar.gz nif@n2]:/home/nif/Downloads/]
+   [nif@n1]>scp /home/nif/Downloads/zookeeper-3.4.6.tar.gz nif@n3]:/home/nif/Downloads/]
 
 #check in nodes in /usr/local if it already has zookeeper related directory
 $cd /usr/local
@@ -124,8 +124,8 @@ export PATH=$PATH:$ZOOKEEPER_HOME/bin
 $source .bashrc
 
 #if already set in one machine, scp .bashrc to other machines
-nif$n1>scp .bashrc nif@n2:/home/nif
-nif$n2>scp .bashrc nif@n3:/home/nif
+nif@n1]>scp .bashrc nif@n2]:/home/nif
+nif@n2]>scp .bashrc nif@n3]:/home/nif
 
 ---updating zookeeper configs on each machine
 $cd /usr/local/zookeeper/conf
@@ -165,8 +165,8 @@ $vi zoo.cfg
 #remember to copy zoo.cfg to /usr/local/zookeeper/conf/ in each machine or edit manually
 #note you are in /usr/local/zookeeper/conf
 
-nif$n1>scp zoo.cfg nif@n2:/usr/local/zookeeper/conf/
-nif$n1>scp zoo.cfg nif@n3:/usr/local/zookeeper/conf/
+nif@n1]>scp zoo.cfg nif@n2]:/usr/local/zookeeper/conf/
+nif@n1]>scp zoo.cfg nif@n3]:/usr/local/zookeeper/conf/
 
 ---Every machine that is part of the ZooKeeper ensemble needs to know about every other machine in the ensemble. 
    As such, we need to attribute a server id to each machine by creating a file named myid, one for each server,
@@ -175,25 +175,25 @@ nif$n1>scp zoo.cfg nif@n3:/usr/local/zookeeper/conf/
 ---Note: More information about ZooKeper configuration settings can be found in the ZooKeeper Getting Started Guide.
 
 #on node1
-n1$zkServer.sh start
+nif@n1]zkServer.sh start
 >jps
 echo 1 > /tmp/zookeeper/myid
 #if zookeeper directory doesn't exist in /tmp, create it.
-n1$zkServer.sh start
+nif@n1]zkServer.sh start
 
 #on node2
-n2$zkServer.sh start
+nif@n2]zkServer.sh start
 >jps
 echo 2 > /tmp/zookeeper/myid
 #if zookeeper directory doesn't exist in /tmp, create it.
-n2$zkServer.sh start
+nif@n2]zkServer.sh start
 
 #on node3
-n3$zkServer.sh start
+nif@n3]zkServer.sh start
 jps
 echo 3 > /tmp/zookeeper/myid
 #if zookeeper directory doesn't exist in /tmp, create it.
-n2$zkServer.sh start
+nif@n2]zkServer.sh start
 
 ZooKeeper Startup
 check if ZooKeeper was started on each host
@@ -206,9 +206,9 @@ $echo stat | nc n3 2181
 
 (optional)
 #We can also start zookeepers in foreground as follows
-n1$zkServer.sh start-foreground
-n2$zkServer.sh start-foreground
-n3$zkServer.sh start-foreground
+nif@n1]zkServer.sh start-foreground
+nif@n2]zkServer.sh start-foreground
+nif@n3]zkServer.sh start-foreground
 
 Step 2:
 Now that zookeeper processes are running on each machine, we need to setup kafka 
@@ -233,8 +233,8 @@ export KAFKA_HOME=/usr/local/kafka
 export PATH=$PATH:$KAFKA_HOME/bin
 
 #if already set in one machine, scp .bashrc to other machines
-nif$n1>scp .bashrc nif@n2:/home/nif
-nif$n2>scp .bashrc nif@n3:/home/nif
+nif@n1]>scp .bashrc nif@n2]:/home/nif
+nif@n2]>scp .bashrc nif@n3]:/home/nif
 
 #on each node while logged in as 'nif'
 $source .bashrc
