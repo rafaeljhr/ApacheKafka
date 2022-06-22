@@ -1,3 +1,0 @@
-#here are some sample docker-compose files which can be used to start kafka as 
-stand-alone or a cluster using wurstmeister/confluentinc docker images)
-

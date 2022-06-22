@@ -1,6 +1,7 @@
 #Working with kafkanzk cluster
 --------------------
-Zookeeper acts as a external metadata management system for kafka. This creates multiple problems such as data duplication,
+Zookeeper acts as a external metadata management system for kafka.
+ This creates multiple problems such as data duplication,
 increased system complexity and also leads to additional java processes being used.
 In order to run kafka without zookeeper, it can be run using Kafka Raft metadata mode ( KRaft ). 
 In KRaft the kafka metadata information will be stored as a partition within kafka itself. 
