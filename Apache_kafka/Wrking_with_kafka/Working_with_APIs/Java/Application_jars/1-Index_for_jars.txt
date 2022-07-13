@@ -5,14 +5,11 @@ Jars here correspond to java project folders..
 Kafka_Prod_Consu_for_string
 --kafka-producer-0.0.1-SNAPSHOT.jar
 --kafka-consumer-0.0.1-SNAPSHOT.jar
-Kafka_Produ
---kafka-0.0.1-SNAPSHOT.jar
 Kafka_Produ_Consu_for_Json
 --kafka-consumer-0.0.1-SNAPSHOT-JSON.jar
 --kafka-producer-0.0.1-SNAPSHOT-JSON.jar
 Streamsapp
 --streamsapp-0.0.1-SNAPSHOT.jar (for standalone)
---streamsapp-0.0.1-SNAPSHOT-n1strm-topic1 (for distributed cluster where atleast one broker is n1
-& input topic is 'Topic1' < created and published by 'ProducerApp' as in 'Kafka_Prod_Consu_for_string')
---streamsapp-0.0.1-SNAPSHOT-n1strm.jar (for distributed cluster where atleast one broker is n1 &
+--streamsapp-0.0.1-SNAPSHOT-n1strm (for distributed cluster where atleast one broker is n1)
+--streamsapp-0.0.1-SNAPSHOT-n1strm2 (for distributed cluster where atleast one broker is n1 &
 default topics as in instructions.)
