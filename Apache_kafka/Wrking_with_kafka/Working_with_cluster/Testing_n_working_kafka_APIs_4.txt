@@ -1,4 +1,4 @@
---Setting up Producer and Consumer with custom properties.
+#Setting up Producer and Consumer with custom properties.
 ##Create a topic with 3 repl and 3 partitions (provided you have a 3 node cluster)
 kafka-topics.sh --create --topic hello_world_topic --partitions 3 --replication-factor 3 --bootstrap-server c1:9092
 kafka-topics.sh --list --bootstrap-server c1:9092

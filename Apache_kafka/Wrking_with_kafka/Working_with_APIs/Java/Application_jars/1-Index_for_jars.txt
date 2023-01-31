@@ -1,5 +1,5 @@
 Jars here correspond to java project folders..
-
+Double check the jars or package applications again
 #packaged applications point to cluster, where atleast 1 broker is on n1 (node)
 
 Kafka_Prod_Consu_for_string

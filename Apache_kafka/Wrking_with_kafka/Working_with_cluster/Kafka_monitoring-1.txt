@@ -1,3 +1,4 @@
+--setup Jconsole
 Jconsole < JMX
 https://gist.github.com/thbkrkr/77c8f6f9a301d7b16555726793af8301
 https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html/using_amq_streams_on_red_hat_enterprise_linux_rhel/monitoring-str
