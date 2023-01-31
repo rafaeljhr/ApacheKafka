@@ -1,12 +1,14 @@
 Running Kakfa with internal zookeeper
 -----------------------
 #As of now we don't need multiple machines
-#Later we will setup multiple nodes (able to ping each other/ssh each other and with Java 8+)
 
 #As of now to start with 1 node
 on node1 (say m1)
 --Download kafka tar from archive.apache.org
 http://archive.apache.org/dist/kafka/2.2.1/kafka_2.11-2.2.1.tgz
+
+or download newer version
+kafka_2.13-2.8.1
 
 $sudo su
 $cd /usr/local

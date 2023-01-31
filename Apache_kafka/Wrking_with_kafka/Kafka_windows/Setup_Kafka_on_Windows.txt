@@ -1,6 +1,6 @@
 Download kafka from archive.apache.org and unzip/untar it 
 
-For example: kafka_2.11-2.2.1
+For example: kafka_2.11-2.2.1 or newer version kafka_2.13-2.8.1
 
 Edit zookeeper.properties in C:\\kafka\\kafka_2.11-2.2.1\\config
 # the directory where the snapshot is stored.

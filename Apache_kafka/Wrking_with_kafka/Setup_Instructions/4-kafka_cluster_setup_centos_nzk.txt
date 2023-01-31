@@ -1,4 +1,4 @@
-
+--using newer version that supports KRaft mode
 #Setup kafka 2.8 (without zookeeper)
 Download kafka_2.13-2.8.1.tgz from archive.apache.org > kafka
 -------

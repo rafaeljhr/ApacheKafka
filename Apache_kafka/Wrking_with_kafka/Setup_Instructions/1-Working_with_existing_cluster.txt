@@ -2,6 +2,7 @@
 --start vmbox by double clicking
 
 --start machines one by one
+--change hostnames accordingly
   (n1, n2, n3)
 --password for machines is 'abcd1234'
 

@@ -5,6 +5,7 @@ Step 1:
 Setup a Zookeeper ensemble (cluster of zookeeper with atleast 3 zk peers)
 ----------------------------------
 #Setup atleast 3 machines (ubuntu /centos) within VMbox
+--change hostnames accordingly
 centos(n1,n2,n3) as in our case
 
 Centos Nodes:
