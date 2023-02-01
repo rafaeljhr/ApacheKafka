@@ -293,80 +293,80 @@ Processed a total of 8 messages
 
 
 #looking into consumer groups
-kafka-consumer-groups.sh --bootstrap-server c1:9092 --list
-
+--shows last consumer group created when consumer application was launched
 #creating consumer group while reading using a consumer
 hdu@c1:~$ kafka-consumer-groups.sh --bootstrap-server c1:9092 --list
-my-group
+777
 
-hdu@c1:~$ kafka-console-consumer.sh --bootstrap-server c1:9092 --topic topic6 --from-beginning
-australia
-dubai
-america
-germany
-india
-bangladesh
-singapore
-germany
-france
-italy
-india
-canada
-usa
-canada
-^CProcessed a total of 14 messages
+#start a consumer application, attach it to a consumer group and consume latest
 
-#all datasets used here can be found in 'https://github.com/ajaykuma/datasets'
+#parallely start a producer to send data to this topic
+[hdu@c1 ~]$ kafka-console-producer.sh --topic Topic1 --broker-list c1:9092
+>msg1
+>msg2
+>msg3
+>msg4
+>msg5
+>msg7
+>msg8
+>msg9
+>msg00
+>msg10
+
+[hdu@c1 ~]$ kafka-console-consumer.sh --bootstrap-server c1:9092 --topic Topic1 --group ApplGroup --property print.partition=true --property print.timestamp=true --property print.offset true
+CreateTime:1675234115317	Partition:1	msg1
+CreateTime:1675234116725	Partition:0	msg2
+CreateTime:1675234118526	Partition:1	msg3
+CreateTime:1675234119543	Partition:0	msg4
+CreateTime:1675234120949	Partition:2	msg5
+
+#start 2 more instances of same application belonging to same group and check for rebalancing and assigning of partitions
+[hdu@c1 ~]$ kafka-console-consumer.sh --bootstrap-server c1:9092 --topic Topic1 --group ApplGroup --property print.partition=true --property print.timestamp=true --property print.offset true
+CreateTime:1675234192711	Partition:0	msg8
+CreateTime:1675234198866	Partition:0	msg00
+
+[hdu@c1 ~]$ kafka-console-consumer.sh --bootstrap-server c1:9092 --topic Topic1 --group ApplGroup --property print.partition=true --property print.timestamp=true --property print.offset true
+CreateTime:1675234191240	Partition:1	msg7
+CreateTime:1675234195077	Partition:1	msg9
+CreateTime:1675234200278	Partition:1	msg10
+
+[hdu@c1 ~]$ kafka-consumer-groups.sh --list --bootstrap-server c1:9092
+ApplGroup
+777
+
+#all datasets used here can be found in 'https://github.com/ajaykuma/datasets_for_work'
 [hdu@c1 ~]$ kafka-topics.sh --create --topic BankData --partitions 3 --replication-factor 3 --bootstrap-server c1:9092
-[hdu@c1 ~]$ kafka-console-producer.sh --topic BankData --broker-list c1:9092 < bankres.csv
-> C:\Users\Wic10\Downloads\kafka\kafka_2.11-2.2.1\bin\windows>kafka-console-producer.bat --topic Test1 --broker-list localhost:9092 < I:\\GitContent\\Datasets\\Datasets\\Superstore\\global_superstore_2016_v.csv
+[hdu@c1 ~]$ kafka-console-producer.sh --topic BankData --broker-list c1:9092 < <path>/bank_full.csv
 
-[hdu@c1 ~]$ kafka-console-consumer.sh --topic BankData --from-beginning --bootstrap-server c1:9092
+kafka-console-producer.sh --topic Test1 --broker-list c1:9092 < <path>/global_superstore_2016_v.csv
+
+kafka-console-consumer.sh --topic BankData --from-beginning --bootstrap-server c1:9092
 
 kafka-topics.sh --create --topic PrimerData --partitions 3 --replication-factor 3 --bootstrap-server c1:9092
 kafka-console-producer.sh --topic PrimerData --broker-list c1:9092 < /home/hdu/Downloads/primer-dataset.json
 kafka-console-consumer.sh --topic PrimerData --bootstrap-server c1:9092 --from-beginning
 
 #other option specifying serializer
-C:\Users\Wic10\Downloads\kafka\kafka_2.11-2.2.1\bin\windows>kafka-console-producer.bat --topic primerdata --broker-list localhost:9092 --property 
-value-serializer="import org.apache.kafka.connect.json.JsonSerializer" < I:\\GitContent\\Datasets\\Datasets\\employees.json
+kafka-console-producer.sh --topic primerdata --broker-list localhost:9092 --property 
+value-serializer="import org.apache.kafka.connect.json.JsonSerializer" < employees.json
 
-C:\Users\Wic10\Downloads\kafka\kafka_2.11-2.2.1\bin\windows>kafka-console-consumer.bat --topic primerdata 
---bootstrap-server localhost:9092 --property value-serializer="org.springframework.kafka.support.serializer.JsonDeserializer" --from-beginning
+kafka-console-consumer.sh --topic primerdata --bootstrap-server localhost:9092 --property value-serializer="org.springframework.kafka.support.serializer.JsonDeserializer" --from-beginning
 {"name":"Michael", "salary":3000}
 
-#command below shows our created consumer groups and which were created whenever a console-consumer runs.
-hdu@c1:~$ kafka-consumer-groups.sh --bootstrap-server c1:9092 --list
-console-consumer-56780
-my-group
-
-
 kafka-consumer-groups.sh --topic Topic1 --bootstrap-server c1:9092 --group grp1 --reset-offsets --to-earliest
-hdu@c1:~$ kafka-console-consumer.sh --bootstrap-server c1:9092 --topic topic6 --from-beginning --group countries
+kafka-console-consumer.sh --bootstrap-server c1:9092 --topic topic6 --from-beginning --group countries
 australia
 dubai
 america
 germany
 india
 bangladesh
-singapore
-germany
-france
-italy
-india
-canada
-usa
-canada
-^CProcessed a total of 14 messages
-
-hdu@c1:~$ kafka-consumer-groups.sh --bootstrap-server c1:9092 --list
-console-consumer-56780
-my-group
-countries
 
 Other commands/options
 #look at configs which can be changed
-C:\Users\Wic10\Downloads\kafka\kafka_2.11-2.2.1\bin\windows>kafka-configs.bat --zookeeper localhost:2181
+kafka-configs.sh --zookeeper c1:2181
+
+#Understanding Logs
 
 #looking to timeindex log
 C:\Users\Wic10\Downloads\kafka\kafka_2.11-2.2.1\bin\windows>kafka-dump-log.bat --files C:\Users\Wic10\Downloads\Java\Kafka_Prod_Consu_for_string2\Kafka_Project\tmp\kafka-logs\Test1-0\00000000000000000000.timeindex

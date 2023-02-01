@@ -35,16 +35,6 @@ C:\Users\Win10\Downloads\kafka\kafka_2.11-2.2.1\bin\windows>kafka-console-consum
 CreateTime:1644329887841        45208,71,retired,divorced,primary,no,1729,no,no,cellular,17,nov,456,2,-1,0,unknown,yes
 CreateTime:1644329887841        45211,37,entrepreneur,married,secondary,no,2971,no,no,cellular,17,nov,361,2,188,11,other,no
 
-#Notes:
-Every log composing a partition (usually there will be a single one) is composed of multiple segments, ordered from the oldest 
-to the most recent ones. Every segment has its data file where all records are stored and in addition to it, 
-it also has 3 different indexes. Aborted transactions index takes care of records visibility during the transaction. 
-
-Timestamp index is a mapping between records timestamps and their positions whereas offset index is the mapping between offsets
- and their positions in the files. 
-The entries in the indexes aren't added for every single record added to the log. The frequency of updates is controlled by 
-index.interval.bytes property which by default is 4096. It means that Apache Kafka will add new entries to the offset and 
-timestamp indexes every 4096 bytes.
 
 
 
