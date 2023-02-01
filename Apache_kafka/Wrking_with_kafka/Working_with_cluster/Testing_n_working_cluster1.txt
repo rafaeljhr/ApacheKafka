@@ -378,9 +378,37 @@ kafka-run-class.sh kafka.tools.EndToEndLatency c1:9092,n2:9092,n3:9092 Test2 100
 
 kafka-consumer-perm-test.sh --topic Test2 --broker-list c1:9092 --messages 1000000
 
+#looking into metadata nodes
+kafka-metadata-shell.sh --snapshot /usr/local/kafka/kafka-logs/bankdata-0/00000000000000000030.snapshot
 
+#Connecting to zookeeper
+[hdu@c1 Working_with_cluster]$ zookeeper-shell.sh c1:2181
+Connecting to c1:2181
+Welcome to ZooKeeper!
+JLine support is disabled
 
+WATCHER::
 
+WatchedEvent state:SyncConnected type:None path:null
+ls
+ls [-s] [-w] [-R] path
+ls /
+[admin, brokers, cluster, config, consumers, controller, controller_epoch, feature, isr_change_notification, latest_producer_id_block, log_dir_event_notification, zookeeper]
+ls /cluster
+[id]
+ls /cluster/id
+[]
+get /cluster/id
+{"version":"1","id":"Sk_5hgxbTCSEjlYj8_KZtA"}
+ls /config
+[brokers, changes, clients, ips, topics, users]
+ls /config/topics
+[Topic1, Topic2, Topic3, __consumer_offsets, bankdata, employees, employees1, hello_world_topic, primerdata]
+get /config/topics/Topic1
+{"version":1,"config":{}}
+ls /config/topics/Topic1
+
+quit
 
 
 
