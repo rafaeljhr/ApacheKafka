@@ -7,4 +7,5 @@ Option1:
 Option2:
 Just take the jar file 'streamsapp-0.0.n1-SNAPSHOT.jar' from github and use it
 this is edited to connect to n1 as broker.
+--if broker is on different host, we need to create the jar again
 

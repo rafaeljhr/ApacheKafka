@@ -1,4 +1,5 @@
 #Building your kafka-consumer application
+#Tested on windows ,if using linux make changes accordingly
 ------------------------
 https://start.spring.io/
 Project: Maven Project

@@ -1,13 +1,16 @@
 #working with python api
+
 --check python
---if python3 installed, set alias
+--if python3 installed, set alias in .bashrc
 alias python=python3
+
+--refresh .bashrc
 
 sudo apt install python3-pip
 pip3 install kafka-python
 
 #create topic
-kafka-topics.sh --create --zookeeper m3:2181 --replication-factor 1 --partitions 1 --topic numtest
+kafka-topics.sh --create --zookeeper c1:2181 --replication-factor 1 --partitions 1 --topic numtest
 
 
 #create a producer py file

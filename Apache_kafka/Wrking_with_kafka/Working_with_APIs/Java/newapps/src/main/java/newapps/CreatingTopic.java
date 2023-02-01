@@ -10,7 +10,7 @@ import java.util.concurrent.ExecutionException;
 public class CreatingTopic {
   public static void main(String[] args) throws ExecutionException, InterruptedException {
       Properties config = new Properties();
-      config.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "n1:9092");
+      config.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
       AdminClient admin = AdminClient.create(config);
       //creating new topic
       System.out.println("-- creating --");

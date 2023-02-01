@@ -11,7 +11,7 @@ from kafka import KafkaConsumer, KafkaProducer
 class Producer(threading.Thread):
     daemon = True
     def run(self):
-        producer = KafkaProducer(bootstrap_servers='m3:9092',
+        producer = KafkaProducer(bootstrap_servers='localhost:9092',
                                  value_serializer=lambda v: json.dumps(v).encode('utf-8'))
         while True:
             producer.send('topic1', {"dataObjectID": "test1"})
@@ -22,7 +22,7 @@ class Producer(threading.Thread):
 class Consumer(threading.Thread):
     daemon = True    
     def run(self):
-        consumer = KafkaConsumer(bootstrap_servers='m3:9092',
+        consumer = KafkaConsumer(bootstrap_servers='localhost:9092',
                                  auto_offset_reset='earliest',
                                  value_deserializer=lambda m: json.loads(m.decode('utf-8')))
         consumer.subscribe(['topic1'])        
