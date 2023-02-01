@@ -1,0 +1,5 @@
+#Using AdminClient to administer/manage kafka cluster
+if we don’t have access to the machine where it is deployed or we don’t have a tool like Yahoo Kafka Manager, 
+we can use Apache Kafka’s AdminClient API for getting details about the topic or other details.
+
+The AdminClient API supports managing and inspecting topics, brokers, acls, and other Kafka objects. 
