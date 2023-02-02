@@ -83,6 +83,9 @@ public final class WordCountDemo {
 		 * Duration inactivityGap = Duration.ofMinutes(5);
 		 * TimeWindows hoppingWindow = TimeWindows.of(windowSize).advanceBy(advanceSize)
 		 * TimeWindows tumblingWindow = TimeWindows.of(windowSize);
+		 * Duration timeDifference = Duration.ofSeconds(2);
+		 * Duration gracePeriod = Duration.ofMillis(500);
+		 * 
 		 */
         final KTable<String, Long> counts = source
             .flatMapValues(value -> Arrays.asList(value.toLowerCase(Locale.getDefault()).split("\\W+")))
@@ -90,6 +93,7 @@ public final class WordCountDemo {
             //.windowedBy(tumblingWindow)
             //.windowedBy(hoppingWindow)
           //.windowedBy(SessionWindows.with(inactivityGap))
+            //.windowedBy(SlidingWindows.withTimeDifferenceAndGrace(timeDifference, gracePeriod))
             .count();
 
         // need to override value serde to Long type
