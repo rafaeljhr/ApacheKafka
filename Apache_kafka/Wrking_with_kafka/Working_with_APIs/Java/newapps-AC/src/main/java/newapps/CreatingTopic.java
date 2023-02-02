@@ -14,7 +14,7 @@ public class CreatingTopic {
       AdminClient admin = AdminClient.create(config);
       //creating new topic
       System.out.println("-- creating --");
-      NewTopic newTopic = new NewTopic("Topic10", 1, (short) 1);
+      NewTopic newTopic = new NewTopic("Topic4", 1, (short) 1);
       admin.createTopics(Collections.singleton(newTopic));
 
       //listing
