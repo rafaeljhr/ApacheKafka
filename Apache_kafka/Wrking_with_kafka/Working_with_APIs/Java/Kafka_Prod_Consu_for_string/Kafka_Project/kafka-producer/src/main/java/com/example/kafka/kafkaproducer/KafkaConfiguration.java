@@ -20,9 +20,15 @@ public class KafkaConfiguration {
 	@Bean
 	public ProducerFactory<String, String> producerFactory() {
 		Map<String, Object> config = new HashMap<>();
-		config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "n1:9092");
+		config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "c1:9092");
 		config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 		config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+		//config.put(ProducerConfig.ACKS_CONFIG, "all");
+		//config.put(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG,10000);
+        //config.put(ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG,11000);
+        //config.put(ProducerConfig.MAX_REQUEST_SIZE_CONFIG,1048576);
+        //config.put(ProducerConfig.COMPRESSION_TYPE_CONFIG,"snappy" );
+        //config.put(ProducerConfig.LINGER_MS_CONFIG,5 );
 		
 		return new DefaultKafkaProducerFactory<String, String>(config);
 	}
