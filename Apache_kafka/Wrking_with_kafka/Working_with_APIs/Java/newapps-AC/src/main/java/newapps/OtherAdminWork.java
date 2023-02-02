@@ -41,7 +41,7 @@ public class OtherAdminWork {
 
 	public static void main(String[] args) throws ExecutionException, InterruptedException {
 		Properties config = new Properties();
-		config.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "c1:9092");
+		config.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "c2:9092");
 		AdminClient admin = AdminClient.create(config);
 
 		// Who are the brokers? Who is the controller?
@@ -93,13 +93,13 @@ public class OtherAdminWork {
 		//Arrays contain the brokers to which partitions will be assigned
 		Map<TopicPartition, Optional<NewPartitionReassignment>> reassignment = new HashMap<>();
 		reassignment.put(new TopicPartition(TOPIC_NAME, 0),
-				Optional.of(new NewPartitionReassignment(Arrays.asList(1, 2, 3))));
+				Optional.of(new NewPartitionReassignment(Arrays.asList(1,3,0))));
 		reassignment.put(new TopicPartition(TOPIC_NAME, 1),
-				Optional.of(new NewPartitionReassignment(Arrays.asList(2, 3, 0))));
+				Optional.of(new NewPartitionReassignment(Arrays.asList(0,3,1))));
 		reassignment.put(new TopicPartition(TOPIC_NAME, 2),
-				Optional.of(new NewPartitionReassignment(Arrays.asList(3, 2, 0))));
+				Optional.of(new NewPartitionReassignment(Arrays.asList(0,3,1))));
 		reassignment.put(new TopicPartition(TOPIC_NAME, 3),
-				Optional.of(new NewPartitionReassignment(Arrays.asList(1, 3, 0))));
+				Optional.of(new NewPartitionReassignment(Arrays.asList(1,3,0))));
 		reassignment.put(new TopicPartition(TOPIC_NAME, 4), Optional.empty());
 
 		try {

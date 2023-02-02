@@ -25,9 +25,11 @@ import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Produced;
+import org.apache.kafka.streams.kstream.TimeWindows;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Properties;
@@ -61,7 +63,7 @@ public final class WordCountDemo {
             }
         }
         props.putIfAbsent(StreamsConfig.APPLICATION_ID_CONFIG, "streams-wordcount");
-        props.putIfAbsent(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        props.putIfAbsent(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "c1:9092");
         props.putIfAbsent(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, 0);
         props.putIfAbsent(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
         props.putIfAbsent(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
@@ -75,14 +77,24 @@ public final class WordCountDemo {
 
     static void createWordCountStream(final StreamsBuilder builder) {
         final KStream<String, String> source = builder.stream(INPUT_TOPIC);
-
+		/*
+		 * Duration windowSize = Duration.ofMinutes(5); 
+		 * Duration advanceSize = Duration.ofMinutes(1);
+		 * Duration inactivityGap = Duration.ofMinutes(5);
+		 * TimeWindows hoppingWindow = TimeWindows.of(windowSize).advanceBy(advanceSize)
+		 * TimeWindows tumblingWindow = TimeWindows.of(windowSize);
+		 */
         final KTable<String, Long> counts = source
             .flatMapValues(value -> Arrays.asList(value.toLowerCase(Locale.getDefault()).split("\\W+")))
             .groupBy((key, value) -> value)
+            //.windowedBy(tumblingWindow)
+            //.windowedBy(hoppingWindow)
+          //.windowedBy(SessionWindows.with(inactivityGap))
             .count();
 
         // need to override value serde to Long type
         counts.toStream().to(OUTPUT_TOPIC, Produced.with(Serdes.String(), Serdes.Long()));
+        
     }
 
     public static void main(final String[] args) throws IOException {
