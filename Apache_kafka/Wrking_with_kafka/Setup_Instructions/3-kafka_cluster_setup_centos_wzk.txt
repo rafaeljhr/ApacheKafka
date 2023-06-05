@@ -6,7 +6,7 @@ Setup a Zookeeper ensemble (cluster of zookeeper with atleast 3 zk peers)
 ----------------------------------
 #Setup atleast 3 machines (ubuntu /centos) within VMbox
 --change hostnames accordingly
-centos(n1,n2,n3) as in our case
+centos(c1,c2,c3) as in our case
 
 Centos Nodes:
 Now on each machine
@@ -72,20 +72,20 @@ $ssh-keygen -t rsa -P ""
 
 2.Distributing ssh public keys to other machines
 ----------------------
-$elk$n1:ssh-copy-id -i $HOME/.ssh/id_rsa.pub elk@n2
-$elk$n1:ssh-copy-id -i $HOME/.ssh/id_rsa.pub elk@n3
-$elk$n2:ssh-copy-id -i $HOME/.ssh/id_rsa.pub elk@n1
-$elk$n2:ssh-copy-id -i $HOME/.ssh/id_rsa.pub elk@n3
-$elk$n3:ssh-copy-id -i $HOME/.ssh/id_rsa.pub elk@n1
-$elk$n3:ssh-copy-id -i $HOME/.ssh/id_rsa.pub elk@n2
+$elk$c1:ssh-copy-id -i $HOME/.ssh/id_rsa.pub elk@c2
+$elk$c1:ssh-copy-id -i $HOME/.ssh/id_rsa.pub elk@c3
+$elk$c2:ssh-copy-id -i $HOME/.ssh/id_rsa.pub elk@c1
+$elk$c2:ssh-copy-id -i $HOME/.ssh/id_rsa.pub elk@c3
+$elk$c3:ssh-copy-id -i $HOME/.ssh/id_rsa.pub elk@c1
+$elk$c3:ssh-copy-id -i $HOME/.ssh/id_rsa.pub elk@c2
 
 3.To enable SSH access to your local machine with this newly created key
 ----------------------------------------
 to add the xxxx@master’s public SSH key (which should be in $HOME/.ssh/id_rsa.pub) 
 to the authorized_keys file of xxxx@master(in this user’s $HOME/.ssh/authorized_keys)
-n1$cat $HOME/.ssh/id_rsa.pub >> $HOME/.ssh/authorized_keys
-n2$cat $HOME/.ssh/id_rsa.pub >> $HOME/.ssh/authorized_keys
-n3$cat $HOME/.ssh/id_rsa.pub >> $HOME/.ssh/authorized_keys
+c1$cat $HOME/.ssh/id_rsa.pub >> $HOME/.ssh/authorized_keys
+c2$cat $HOME/.ssh/id_rsa.pub >> $HOME/.ssh/authorized_keys
+c3$cat $HOME/.ssh/id_rsa.pub >> $HOME/.ssh/authorized_keys
 
 Test your ssh access...
 
@@ -95,8 +95,8 @@ zookeeper-3.4.6.tar.gz
 
 ---Download on each node 
    or download on 1st node and then copy(scp) to each node 
-   [elk$n1>scp /home/elk/Downloads/zookeeper-3.4.6.tar.gz elk@n2:/home/elk/Downloads/]
-   [elk$n1>scp /home/elk/Downloads/zookeeper-3.4.6.tar.gz elk@n3:/home/elk/Downloads/]
+   [elk$c1>scp /home/elk/Downloads/zookeeper-3.4.6.tar.gz elk@c2:/home/elk/Downloads/]
+   [elk$c1>scp /home/elk/Downloads/zookeeper-3.4.6.tar.gz elk@c3:/home/elk/Downloads/]
 
 #check in nodes in /usr/local if it already has zookeeper related directory
 $cd /usr/local
@@ -104,7 +104,7 @@ $ls -all
 
 #if not..
 
----After downloading repeat these steps on each node (say n1,n2,n3)
+---After downloading repeat these steps on each node (say c1,c2,c3)
 
 su - root
 $cd /usr/local
@@ -125,8 +125,8 @@ export PATH=$PATH:$ZOOKEEPER_HOME/bin
 $source .bashrc
 
 #if already set in one machine, scp .bashrc to other machines
-elk$n1>scp .bashrc elk@n2:/home/elk
-elk$n2>scp .bashrc elk@n3:/home/elk
+elk$c1>scp .bashrc elk@c2:/home/elk
+elk$c2>scp .bashrc elk@c3:/home/elk
 
 ---updating zookeeper configs on each machine
 $cd /usr/local/zookeeper/conf
@@ -154,11 +154,11 @@ $vi zoo.cfg
 	clientPort=2181
 	initLimit=5
 	syncLimit=2
-	server.1=n1:2888:3888
-	server.2=n2:2888:3888
-	server.3=n3:2888:3888
+	server.1=c1:2888:3888
+	server.2=c2:2888:3888
+	server.3=c3:2888:3888
 
----we specified the servername as 'hostname' i.e. say 'n1 , n2, n3',
+---we specified the servername as 'hostname' i.e. say 'c1 , c2, c3',
    with quorum & leader election ports (i.e. 2888:3888, 2888:3888, 2888:3888) 
 ---port 2888 for quorum peers to communicate to each other
 ---port 3888 for leader election
@@ -166,8 +166,8 @@ $vi zoo.cfg
 #remember to copy zoo.cfg to /usr/local/zookeeper/conf/ in each machine or edit manually
 #note you are in /usr/local/zookeeper/conf
 
-elk$n1>scp zoo.cfg elk$n2:/usr/local/zookeeper/conf/
-elk$n1>scp zoo.cfg elk$n3:/usr/local/zookeeper/conf/
+elk$c1>scp zoo.cfg elk$c2:/usr/local/zookeeper/conf/
+elk$c1>scp zoo.cfg elk$c3:/usr/local/zookeeper/conf/
 
 ---Every machine that is part of the ZooKeeper ensemble needs to know about every other machine in the ensemble. 
    As such, we need to attribute a server id to each machine by creating a file named myid, one for each server,
@@ -176,32 +176,40 @@ elk$n1>scp zoo.cfg elk$n3:/usr/local/zookeeper/conf/
 ---Note: More information about ZooKeper configuration settings can be found in the ZooKeeper Getting Started Guide.
 
 #on node1
+zkServer.sh start
+jps
 echo 1 > /tmp/zookeeper/myid
 #if zookeeper directory doesn't exist in /tmp, create it.
+
 #on node2
+zkServer.sh start
+jps
 echo 2 > /tmp/zookeeper/myid
 #if zookeeper directory doesn't exist in /tmp, create it.
+
 #on node3
+zkServer.sh start
+jps
 echo 3 > /tmp/zookeeper/myid
 #if zookeeper directory doesn't exist in /tmp, create it.
 
 ZooKeeper Startup
 Start up each ZooKeeper on each host
 
-n1$zkServer.sh start
-n2$zkServer.sh start
-n3$zkServer.sh start
+c1$zkServer.sh start
+c2$zkServer.sh start
+c3$zkServer.sh start
 
 #check status of which peer acts as leader/follower
-$echo stat | nc n1 2181
-$echo stat | nc n2 2181
-$echo stat | nc n3 2181
+$echo stat | nc c1 2181
+$echo stat | nc c2 2181
+$echo stat | nc c3 2181
 
 (optional)
 #We can also start zookeepers in foreground as follows
-n1$zkServer.sh start-foreground
-n2$zkServer.sh start-foreground
-n3$zkServer.sh start-foreground
+c1$zkServer.sh start-foreground
+c2$zkServer.sh start-foreground
+c3$zkServer.sh start-foreground
 
 Step 2:
 Now that zookeeper processes are running on each machine, we need to setup kafka 
@@ -226,8 +234,8 @@ export KAFKA_HOME=/usr/local/kafka
 export PATH=$PATH:$KAFKA_HOME/bin
 
 #if already set in one machine, scp .bashrc to other machines
-elk$n1>scp .bashrc elk@n2:/home/elk
-elk$n2>scp .bashrc elk@n3:/home/elk
+elk$c1>scp .bashrc elk@c2:/home/elk
+elk$c2>scp .bashrc elk@c3:/home/elk
 
 #on each node while logged in as 'elk'
 $source .bashrc
@@ -236,21 +244,21 @@ $source .bashrc
 
 on node1:
 broker.id=0
-listeners=PLAINTEXT://n1:9092
+listeners=PLAINTEXT://c1:9092
 log.dirs=/usr/local/kafka/kafka-logs
-zookeeper.connect=n1:2181,n2:2181,n3:2181
+zookeeper.connect=c1:2181,c2:2181,c3:2181
 
 on node2:
 broker.id=1
-listeners=PLAINTEXT://n2:9092
+listeners=PLAINTEXT://c2:9092
 log.dirs=/usr/local/kafka/kafka-logs
-zookeeper.connect=n1:2181,n2:2181,n3:2181
+zookeeper.connect=c1:2181,c2:2181,c3:2181
 
 on node3:
 broker.id=2
-listeners=PLAINTEXT://n3:9092
+listeners=PLAINTEXT://c3:9092
 log.dirs=/usr/local/kafka/kafka-logs
-zookeeper.connect=n1:2181,n2:2181,n3:2181
+zookeeper.connect=c1:2181,c2:2181,c3:2181
 
 on each node:
 mkdir /usr/local/kafka/kafka-logs
@@ -266,14 +274,14 @@ on node 3:
 kafka-server-start.sh /usr/local/kafka/config/server.properties
 
 To create Topic:
-kafka-topics.sh --bootstrap-server n1:9092 --create --topic Test1 --partitions 3 --replication-factor 3
-kafka-topics.sh --bootstrap-server n1:9092 --describe --topic Test1
+kafka-topics.sh --bootstrap-server c1:9092 --create --topic Test1 --partitions 3 --replication-factor 3
+kafka-topics.sh --bootstrap-server c1:9092 --describe --topic Test1
 
-echo dump | nc n1 2181 | grep brokers
+echo dump | nc c1 2181 | grep brokers
 
 Making one of the broker as controller node
 #check which broker has controller directory
-echo dump | nc n1 2181
+echo dump | nc c1 2181
 
 
 
