@@ -2,6 +2,24 @@ Download kafka from archive.apache.org and unzip/untar it
 
 For example: kafka_2.11-2.2.1 or newer version kafka_2.13-2.8.1
 
+Download Java (1.8) from oracle website
+For example: C:\Java\jdk1.8.0_341 and C:\Java\jre1.8.0_341
+
+set environment and system variables for java
+JAVA_HOME=C:\Java\jdk1.8.0_341
+
+system variables:
+C:\Java\jre1.8.0_341\bin
+C:\Java\jdk1.8.0_341\bin
+
+set environment and system variables for Kafka
+KAFKA_HOME=C:\kafka\kafka_2.11-2.2.1\
+
+system variables
+C:\kafka\kafka_2.11-2.2.1\bin
+
+--editing if changing settings or we can leave default..
+
 Edit zookeeper.properties in C:\\kafka\\kafka_2.11-2.2.1\\config
 # the directory where the snapshot is stored.
 dataDir=/tmp/zookeeper
