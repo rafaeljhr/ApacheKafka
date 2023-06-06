@@ -343,9 +343,16 @@ CreateTime:1675234200278	Partition:1	msg10
 ApplGroup
 777
 
-#all datasets used here can be found in 'https://github.com/ajaykuma/datasets_for_work'
+#all datasets used here can be found in 'https://github.com/ajaykuma/datasets_for_work' or
+
+use wget
+wget https://github.com/ajaykuma/Datasets_For_Work/blob/main/Bank_full.csv
+--create topic BankData with specific partitions and repl factor
 [hdu@c1 ~]$ kafka-topics.sh --create --topic BankData --partitions 3 --replication-factor 3 --bootstrap-server c1:9092
-[hdu@c1 ~]$ kafka-console-producer.sh --topic BankData --broker-list c1:9092 < <path>/bank_full.csv
+[hdu@c1 ~]$ kafka-console-producer.sh --topic BankData --broker-list c1:9092 < <path>/Bank_full.csv
+
+--without creating topic explicitly
+kafka-console-producer.sh --topic BankData1 --broker-list c1:9092 < <path>/Bank_full.csv
 
 kafka-console-producer.sh --topic Test1 --broker-list c1:9092 < <path>/global_superstore_2016_v.csv
 
