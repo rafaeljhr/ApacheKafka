@@ -176,7 +176,7 @@ dallas
 --here we have to wait for broker to remove all the records from topic and then set topic retention to original value
 
 --set retention.ms to 100 milliseconds
-kafka-configs --zookeeper c1:2181 --entity-type topics --entity-name topic4 --alter --add-config retention.ms=100
+kafka-configs.sh --zookeeper c1:2181 --entity-type topics --entity-name topic4 --alter --add-config retention.ms=100
 
 --wait for brokers to clean up and then check start and end offset
 
@@ -297,6 +297,9 @@ france
 italy
 Processed a total of 8 messages
 
+kafka-console-consumer.sh --topic Topic1 --from-beginning --bootstrap-server c1:9092 --property "print.timestamp=true" --property "print.offset=true" --partition 0
+kafka-console-consumer.sh --topic Topic1 --from-beginning --bootstrap-server c1:9092 --property "print.timestamp=true" --property "print.offset=true" --partition 1
+kafka-console-consumer.sh --topic Topic1 --from-beginning --bootstrap-server c1:9092 --property "print.timestamp=true" --property "print.offset=true" --partition 2
 
 #looking into consumer groups
 --shows last consumer group created when consumer application was launched
