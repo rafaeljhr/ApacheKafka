@@ -124,6 +124,12 @@ topic4:0:6
 hdu@c1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list c1:9092 --topic topic4 --time -2
 topic4:0:0
 
+#check configs
+kafka-configs.sh --describe --all --bootstrap-server c1:9092 --topic Topic1 | grep retention
+  retention.ms=604800000 sensitive=false synonyms={}
+  retention.bytes=-1 sensitive=false synonyms={DEFAULT_CONFIG:log.retention.bytes=-1}
+  delete.retention.ms=86400000 sensitive=false synonyms={DEFAULT_CONFIG:log.cleaner.delete.retention.ms=86400000}
+
 #deleting records(some/all) from a topic
 --if wrong data was produced
 --if there was a bug in producer code
