@@ -2,6 +2,7 @@ package clients;
 import java.util.Properties;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+//import org.jline.builtins.telnet.Connection;
 
 public class BasicProducer {
      public static void main(String[] args) {
@@ -13,6 +14,13 @@ public class BasicProducer {
         settings.put("bootstrap.servers", "c1:9092,c2:9093,c3:9092");
         settings.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         settings.put("value.serializer","org.apache.kafka.common.serialization.StringSerializer");
+		
+		/*
+		 * setting.put(
+		 * "max.block.ms,buffer.memory,compression.type,retries,delivery.timeout.ms" +
+		 * "enable.idempotence","max.in.flight.requests.per.connection","batch.size",
+		 * "Connection.max.idle.mx","delivery.timeout.ms","max.request.size"
+		 */
 
         //create producer
         final KafkaProducer<String,String> producer = new KafkaProducer<>(settings);
@@ -23,8 +31,8 @@ public class BasicProducer {
 	   producer.close();
        }));
 
-       final String topic = "hello_world_topic";
-       for(int i=1; i<=5; i++){
+       final String topic = "Topic-new";
+       for(int i=1; i<=5000; i++){
           final String key = "key-" + i;
           final String value = "value-" + i;
           final ProducerRecord<String, String> record = new ProducerRecord<>(topic, key, value);
@@ -32,3 +40,4 @@ public class BasicProducer {
        }
      }
 }
+
