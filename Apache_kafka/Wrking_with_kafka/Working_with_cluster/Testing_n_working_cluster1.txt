@@ -310,19 +310,25 @@ hdu@c1:~$ kafka-consumer-groups.sh --bootstrap-server c1:9092 --list
 >msg00
 >msg10
 
-[hdu@c1 ~]$ kafka-console-consumer.sh --bootstrap-server c1:9092 --topic Topic1 --group ApplGroup --property print.partition=true --property print.timestamp=true --property print.offset true
+[hdu@c1 ~]$ kafka-console-consumer.sh --bootstrap-server c1:9092 --topic Topic1 --group ApplGroup 
+--property print.partition=true --property print.timestamp=true --property print.offset true
 CreateTime:1675234115317	Partition:1	msg1
 CreateTime:1675234116725	Partition:0	msg2
 CreateTime:1675234118526	Partition:1	msg3
 CreateTime:1675234119543	Partition:0	msg4
 CreateTime:1675234120949	Partition:2	msg5
 
+--in another terminal,to see members in group
+kafka-consumer-groups.sh --bootstrap-server c1:9092 --group ApplGroup --describe --state
+
 #start 2 more instances of same application belonging to same group and check for rebalancing and assigning of partitions
-[hdu@c1 ~]$ kafka-console-consumer.sh --bootstrap-server c1:9092 --topic Topic1 --group ApplGroup --property print.partition=true --property print.timestamp=true --property print.offset true
+[hdu@c1 ~]$ kafka-console-consumer.sh --bootstrap-server c1:9092 --topic Topic1 --group ApplGroup 
+--property print.partition=true --property print.timestamp=true --property print.offset true
 CreateTime:1675234192711	Partition:0	msg8
 CreateTime:1675234198866	Partition:0	msg00
 
-[hdu@c1 ~]$ kafka-console-consumer.sh --bootstrap-server c1:9092 --topic Topic1 --group ApplGroup --property print.partition=true --property print.timestamp=true --property print.offset true
+[hdu@c1 ~]$ kafka-console-consumer.sh --bootstrap-server c1:9092 --topic Topic1 --group ApplGroup 
+--property print.partition=true --property print.timestamp=true --property print.offset true
 CreateTime:1675234191240	Partition:1	msg7
 CreateTime:1675234195077	Partition:1	msg9
 CreateTime:1675234200278	Partition:1	msg10
