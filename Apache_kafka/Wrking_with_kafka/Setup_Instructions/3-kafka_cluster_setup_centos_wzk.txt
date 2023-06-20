@@ -283,6 +283,41 @@ Making one of the broker as controller node
 #check which broker has controller directory
 echo dump | nc c1 2181
 
+-----------Additional----
+for additional brokers on c1
+cp /usr/local/kafka/config/server.properties /usr/local/kafka/config/server1.properties
+cp /usr/local/kafka/config/server.properties /usr/local/kafka/config/server2.properties
+
+vi server1.properties
+--change brokerid=3
+--change port = c1:9093
+--change path= /usr/local/kafka/kafka-logs1
+
+vi server2.properties
+--change brokerid=4
+--change port = c1:9094
+--change path= /usr/local/kafka/kafka-logs2
+
+mkdir /usr/local/kafka/kafka-logs1
+mkdir /usr/local/kafka/kafka-logs2
+
+vi extrabrk.sh
+#!/bin/bash
+nohup kafka-server-start.sh /usr/local/kafka/config/server1.propeties &
+nohup kafka-server-start.sh /usr/local/kafka/config/server2.propeties &
+echo dump | nc c1 2181 | grep brokers
+
+chmod -R 777 extrabrk.sh
+
+--start the brokers
+./extrabrk.sh
+
+--to stop addtional broker
+kafka-server-stop.sh /usr/local/kafka/config/server1.propeties
+kafka-server-stop.sh /usr/local/kafka/config/server2.propeties
+
+
+
 
 
 
