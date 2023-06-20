@@ -100,6 +100,14 @@ hdu@c1:~$ ls /tmp/kafka-logs/Topic1-0/
 
 hdu@c1:~$ vi /tmp/kafka-logs/Topic1-0/00000000000000000000.log 
 
+kafka-console-consumer.sh --topic Topic1 --bootstrap-server c1:9092 --from-beginning
+kafka-console-consumer.sh --topic Topic1 --bootstrap-server c1:9092 --from-beginning --partition 0
+kafka-console-consumer.sh --topic Topic1 --bootstrap-server c1:9092 --from-beginning --partition 1
+kafka-console-consumer.sh --topic Topic1 --bootstrap-server c1:9092 --from-beginning --partition 2
+
+kafka-console-consumer.sh --topic Topic1 --bootstrap-server c1:9092 --from-beginning --partition 0 
+--property print.offset=true --property print.timestamp=true --property print.partition=true
+
 --use the GetOffsetShell class to check the beginning and ending offset of a topic's partition.
 hdu@c1:~$ kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list c1:9092 --topic Topic1
 Topic1:0:6
