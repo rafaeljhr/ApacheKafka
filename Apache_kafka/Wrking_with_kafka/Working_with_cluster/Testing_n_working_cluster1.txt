@@ -100,11 +100,19 @@ hdu@c1:~$ ls /tmp/kafka-logs/Topic1-0/
 
 hdu@c1:~$ vi /tmp/kafka-logs/Topic1-0/00000000000000000000.log 
 
+--for latest data from topic
+kafka-console-consumer.sh --topic Topic1 --bootstrap-server c1:9092 
+
+--for latest data from topic for a specific partition
+kafka-console-consumer.sh --topic Topic1 --bootstrap-server c1:9092 --partition 0
+
+--data from beginning 
 kafka-console-consumer.sh --topic Topic1 --bootstrap-server c1:9092 --from-beginning
 kafka-console-consumer.sh --topic Topic1 --bootstrap-server c1:9092 --from-beginning --partition 0
 kafka-console-consumer.sh --topic Topic1 --bootstrap-server c1:9092 --from-beginning --partition 1
 kafka-console-consumer.sh --topic Topic1 --bootstrap-server c1:9092 --from-beginning --partition 2
 
+--specifying additional properties
 kafka-console-consumer.sh --topic Topic1 --bootstrap-server c1:9092 --from-beginning --partition 0 
 --property print.offset=true --property print.timestamp=true --property print.partition=true
 
