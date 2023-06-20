@@ -303,8 +303,8 @@ mkdir /usr/local/kafka/kafka-logs2
 
 vi extrabrk.sh
 #!/bin/bash
-nohup kafka-server-start.sh /usr/local/kafka/config/server1.propeties &
-nohup kafka-server-start.sh /usr/local/kafka/config/server2.propeties &
+nohup kafka-server-start.sh /usr/local/kafka/config/server1.properties &
+nohup kafka-server-start.sh /usr/local/kafka/config/server2.properties &
 echo dump | nc c1 2181 | grep brokers
 
 chmod -R 777 extrabrk.sh
@@ -313,8 +313,8 @@ chmod -R 777 extrabrk.sh
 ./extrabrk.sh
 
 --to stop addtional broker
-kafka-server-stop.sh /usr/local/kafka/config/server1.propeties
-kafka-server-stop.sh /usr/local/kafka/config/server2.propeties
+kafka-server-stop.sh /usr/local/kafka/config/server1.properties
+kafka-server-stop.sh /usr/local/kafka/config/server2.properties
 
 
 
