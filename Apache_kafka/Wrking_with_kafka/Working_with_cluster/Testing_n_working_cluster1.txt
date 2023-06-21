@@ -353,6 +353,13 @@ CreateTime:1675234200278	Partition:1	msg10
 ApplGroup
 777
 
+--for delivery gaurantees
+kafka-console-producer.sh --topic Test1 --broker-list c3:9092 --request-required-acks 1
+kafka-console-producer.sh --topic Test1 --broker-list c3:9092 --producer-property acks=all
+
+--check for min.insync.replicas (which can be changed for broker or topics)
+kafka-configs.sh --describe --all --broker-list c1:9092 --topic Test3 | grep sync
+
 #all datasets used here can be found in 'https://github.com/ajaykuma/datasets_for_work' or
 
 use wget
