@@ -420,7 +420,7 @@ value-serializer="import org.apache.kafka.connect.json.JsonSerializer" < employe
 kafka-console-consumer.sh --topic primerdata --bootstrap-server localhost:9092 --property value-serializer="org.springframework.kafka.support.serializer.JsonDeserializer" --from-beginning
 {"name":"Michael", "salary":3000}
 
-kafka-consumer-groups.sh --topic Topic1 --bootstrap-server c1:9092 --group grp1 --reset-offsets --to-earliest
+kafka-consumer-groups.sh --topic Topic1 --bootstrap-server c1:9092 --group grp1 --reset-offsets --to-earliest --execute
 kafka-console-consumer.sh --bootstrap-server c1:9092 --topic topic6 --from-beginning --group countries
 australia
 dubai
