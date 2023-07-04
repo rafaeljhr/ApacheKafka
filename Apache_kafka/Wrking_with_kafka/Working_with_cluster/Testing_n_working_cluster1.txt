@@ -368,16 +368,41 @@ wget https://github.com/ajaykuma/Datasets_For_Work/blob/main/Bank_full.csv
 [hdu@c1 ~]$ kafka-topics.sh --create --topic BankData --partitions 3 --replication-factor 3 --bootstrap-server c1:9092
 [hdu@c1 ~]$ kafka-console-producer.sh --topic BankData --broker-list c1:9092 < <path>/Bank_full.csv
 
+kafka-run-class.sh kafka.tools.GetOffsetShell --topic BankData --broker-list c1:9092
+
 --without creating topic explicitly
 kafka-console-producer.sh --topic BankData1 --broker-list c1:9092 < <path>/Bank_full.csv
 
+kafka-run-class.sh kafka.tools.GetOffsetShell --topic BankData1 --broker-list c1:9092
+
+--optional---
 kafka-console-producer.sh --topic Test1 --broker-list c1:9092 < <path>/global_superstore_2016_v.csv
+--optional---
 
-kafka-console-consumer.sh --topic BankData --from-beginning --bootstrap-server c1:9092
-
+--optional---
 kafka-topics.sh --create --topic PrimerData --partitions 3 --replication-factor 3 --bootstrap-server c1:9092
 kafka-console-producer.sh --topic PrimerData --broker-list c1:9092 < /home/hdu/Downloads/primer-dataset.json
 kafka-console-consumer.sh --topic PrimerData --bootstrap-server c1:9092 --from-beginning
+--optional---
+
+kafka-topics.sh --create --topic bankdata2 --bootstrap-server c1:9092 --partitions 3 --replication-factor 
+
+kafka-configs.sh --describe --all --topic bankdata2 --bootstrap-server c1:9092 | grep segment
+kafka-configs.sh --bootstrap-server c1:9092 --alter --entity-type topics --entity-name bankdata2 
+--add-config segment.bytes=2000000
+kafka-configs.sh --describe --all --topic bankdata2 --bootstrap-server c1:9092 | grep segment
+kafka-console-producer.sh --broker-list c1:9092 --topic bankdata2 > Downloads/Bank_full.csv
+kafka-console-producer.sh --broker-list c1:9092 --topic bankdata2 > Downloads/Bank_full.csv
+kafka-run-class.sh kafka.tools.GetOffsetShell --topic bankdata2 --broker-list c1:9092
+
+--look at .log files
+ls -all /usr/local/kafka/kafka-logs/bankdata2-0/
+ls -all /usr/local/kafka/kafka-logs/bankdata2-1/
+ls -all /usr/local/kafka/kafka-logs/bankdata2-2/
+
+kafka-dump-log.sh --files /usr/local/kafka/kafka-logs/bankdata2-0/00000000000000000000.log
+kafka-dump-log.sh --files /usr/local/kafka/kafka-logs/bankdata2-0/00000000000000000000.timeindex
+kafka-dump-log.sh --files /usr/local/kafka/kafka-logs/bankdata2-0/00000000000000000000.index
 
 #other option specifying serializer
 kafka-console-producer.sh --topic primerdata --broker-list localhost:9092 --property 
