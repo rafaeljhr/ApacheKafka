@@ -398,8 +398,8 @@ kafka-configs.sh --bootstrap-server c1:9092 --alter --entity-type topics --entit
 kafka-configs.sh --describe --all --topic bankdata2 --bootstrap-server c1:9092 | grep segment
 
 --push some data
-kafka-console-producer.sh --broker-list c1:9092 --topic bankdata2 > Downloads/Bank_full.csv
-kafka-console-producer.sh --broker-list c1:9092 --topic bankdata2 > Downloads/Bank_full.csv
+kafka-console-producer.sh --broker-list c1:9092 --topic bankdata2 < Downloads/Bank_full.csv
+kafka-console-producer.sh --broker-list c1:9092 --topic bankdata2 < Downloads/Bank_full.csv
 
 --look at offsets
 kafka-run-class.sh kafka.tools.GetOffsetShell --topic bankdata2 --broker-list c1:9092
