@@ -385,14 +385,23 @@ kafka-console-producer.sh --topic PrimerData --broker-list c1:9092 < /home/hdu/D
 kafka-console-consumer.sh --topic PrimerData --bootstrap-server c1:9092 --from-beginning
 --optional---
 
-kafka-topics.sh --create --topic bankdata2 --bootstrap-server c1:9092 --partitions 3 --replication-factor 
+kafka-topics.sh --create --topic bankdata2 --bootstrap-server c1:9092 --partitions 3 --replication-factor 3
 
+--check config
 kafka-configs.sh --describe --all --topic bankdata2 --bootstrap-server c1:9092 | grep segment
+
+--edit config
 kafka-configs.sh --bootstrap-server c1:9092 --alter --entity-type topics --entity-name bankdata2 
 --add-config segment.bytes=2000000
+
+--check config
 kafka-configs.sh --describe --all --topic bankdata2 --bootstrap-server c1:9092 | grep segment
+
+--push some data
 kafka-console-producer.sh --broker-list c1:9092 --topic bankdata2 > Downloads/Bank_full.csv
 kafka-console-producer.sh --broker-list c1:9092 --topic bankdata2 > Downloads/Bank_full.csv
+
+--look at offsets
 kafka-run-class.sh kafka.tools.GetOffsetShell --topic bankdata2 --broker-list c1:9092
 
 --look at .log files
