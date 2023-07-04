@@ -353,6 +353,15 @@ CreateTime:1675234200278	Partition:1	msg10
 ApplGroup
 777
 
+--if accessing data from beginning by a new consumer appl belonging to same group
+kafka-consumer-groups.sh --topic Topic1 --bootstrap-server c1:9092 --group ApplGroup --reset-offsets --to-earliest --execute
+kafka-console-consumer.sh --bootstrap-server c1:9092 --topic Topic1 --from-beginning --group ApplGroup
+australia
+dubai
+america
+germany
+india
+bangladesh
 --for delivery gaurantees
 kafka-console-producer.sh --topic Test1 --broker-list c3:9092 --request-required-acks 1
 kafka-console-producer.sh --topic Test1 --broker-list c3:9092 --producer-property acks=all
@@ -420,14 +429,6 @@ value-serializer="import org.apache.kafka.connect.json.JsonSerializer" < employe
 kafka-console-consumer.sh --topic primerdata --bootstrap-server localhost:9092 --property value-serializer="org.springframework.kafka.support.serializer.JsonDeserializer" --from-beginning
 {"name":"Michael", "salary":3000}
 
-kafka-consumer-groups.sh --topic Topic1 --bootstrap-server c1:9092 --group grp1 --reset-offsets --to-earliest --execute
-kafka-console-consumer.sh --bootstrap-server c1:9092 --topic topic6 --from-beginning --group countries
-australia
-dubai
-america
-germany
-india
-bangladesh
 
 Other commands/options
 #look at configs which can be changed
