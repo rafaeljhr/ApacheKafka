@@ -14,11 +14,11 @@ https://github.com/a0x8o/kafka/blob/master/streams/examples/src/main/java/org/ap
  setup a kafka stream application using IDE and edit 'streamConfigs' pointing to your kafka cluster
 
 #creating topic for input
-hdu@n1:~$ kafka-topics.sh --create     --bootstrap-server c1:9092     --replication-factor 3     --partitions 3 --topic streams-plaintext-input
-hdu@n1:~$ kafka-topics.sh --list --bootstrap-server c1:9092
+hdu@ch1:~$ kafka-topics.sh --create     --bootstrap-server ch1:9092     --replication-factor 3     --partitions 3 --topic streams-plaintext-input
+hdu@ch1:~$ kafka-topics.sh --list --bootstrap-server ch1:9092
 __consumer_offsets
 streams-plaintext-input
-topic1
+topich1
 topic2
 topic3
 topic4
@@ -26,21 +26,21 @@ topic5
 topic6
 
 #creating topic for wordcount output
-hdu@n1:~$ kafka-topics.sh --create     --bootstrap-server c1:9092     --replication-factor 3     --partitions 3 --topic streams-wordcount-output  --config cleanup.policy=compact 
-hdu@n1:~$ kafka-topics.sh --list --bootstrap-server c1:9092
+hdu@ch1:~$ kafka-topics.sh --create     --bootstrap-server ch1:9092     --replication-factor 3     --partitions 3 --topic streams-wordcount-output  --config cleanup.policy=compact 
+hdu@ch1:~$ kafka-topics.sh --list --bootstrap-server ch1:9092
 __consumer_offsets
 streams-plaintext-input
 streams-wordcount-output
-topic1
+topich1
 topic2
 topic3
 topic4
 topic5
 topic6
 
-hdu@n1:~$ kafka-topics.sh --bootstrap-server c1:9092 --describe 
-Topic:topic1	PartitionCount:1	ReplicationFactor:1	Configs:segment.bytes=1073741824
-	Topic: topic1	Partition: 0	Leader: 2	Replicas: 2	Isr: 2
+hdu@ch1:~$ kafka-topics.sh --bootstrap-server ch1:9092 --describe 
+Topic:topich1	PartitionCount:1	ReplicationFactor:1	Configs:segment.bytes=1073741824
+	Topic: topich1	Partition: 0	Leader: 2	Replicas: 2	Isr: 2
 Topic:topic2	PartitionCount:1	ReplicationFactor:1	Configs:segment.bytes=1073741824
 	Topic: topic2	Partition: 0	Leader: 1	Replicas: 1	Isr: 1
 Topic:streams-plaintext-input	PartitionCount:3	ReplicationFactor:3	Configs:segment.bytes=1073741824
@@ -72,10 +72,10 @@ kafka-run-class.sh org.apache.kafka.streams.examples.wordcount.WordCountDemo
  streams-wordcount-output.
 
 #start producer
-kafka-console-producer.sh --bootstrap-server c1:9092 --topic streams-plaintext-input
+kafka-console-producer.sh --bootstrap-server ch1:9092 --topic streams-plaintext-input
 
 #reading from output topic
-kafka-console-consumer.sh --bootstrap-server c1:9092 \
+kafka-console-consumer.sh --bootstrap-server ch1:9092 \
     --topic streams-wordcount-output \
     --from-beginning \
     --formatter kafka.tools.DefaultMessageFormatter \
@@ -86,7 +86,6 @@ kafka-console-consumer.sh --bootstrap-server c1:9092 \
 
 --------------------
 #running on a distributed cluster
---An already ready to use jar can be found in this folder
 
 #Create springboot application project (as suggested in git)
 #Delete the main application which gets created
@@ -96,28 +95,27 @@ kafka-console-consumer.sh --bootstrap-server c1:9092 \
 #create topics
 
 #creating topic for input
-hdu@n1:~$ kafka-topics.sh --create     --bootstrap-server c1:9092     --replication-factor 3     --partitions 3 
+hdu@ch1:~$ kafka-topics.sh --create     --bootstrap-server ch1:9092     --replication-factor 3     --partitions 3 
           --topic streams-plaintext-input
-hdu@n1:~$ kafka-topics.sh --list --bootstrap-server c1:9092
+hdu@ch1:~$ kafka-topics.sh --list --bootstrap-server ch1:9092
 
 #creating topic for wordcount output
-hdu@n1:~$ kafka-topics.sh --create     --bootstrap-server c1:9092     --replication-factor 3     --partitions 3 
+hdu@ch1:~$ kafka-topics.sh --create     --bootstrap-server ch1:9092     --replication-factor 3     --partitions 3 
           --topic streams-wordcount-output  --config cleanup.policy=compact 
-hdu@n1:~$ kafka-topics.sh --list --bootstrap-server c1:9092
+hdu@ch1:~$ kafka-topics.sh --list --bootstrap-server ch1:9092
 __consumer_offsets
 streams-plaintext-input
 streams-wordcount-output
-
 
 Step1: from within your cluster
      -- $java -jar streamsapp-0.0.1-SNAPSHOT.jar
      -- This starts your streaming wordcount application
 
 Step2: Start Producer
-        $kafka-console-producer.sh --broker-list c1:9092 --topic streams-plaintext-input
+        $kafka-console-producer.sh --broker-list ch1:9092 --topic streams-plaintext-input
 
 Step 3: Start Consumer
-	$kafka-console-consumer.sh --bootstrap-server c1:9092     --topic streams-wordcount-output     
+	$kafka-console-consumer.sh --bootstrap-server ch1:9092     --topic streams-wordcount-output     
 --from-beginning     --formatter kafka.tools.DefaultMessageFormatter     
 --property print.key=true     
 --property print.value=true     

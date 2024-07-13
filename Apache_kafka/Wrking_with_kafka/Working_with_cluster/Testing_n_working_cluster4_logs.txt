@@ -1,15 +1,15 @@
 #Understanding Logs
 
---When broker starts some files are created within kafka folder, i.e. in our case .../usr/local/kafka/kafka-logs
+--When broker starts some files are created within kafka folder, i.e. in our case .../usr/local/kafka/kafka-logs1
   as specified in <kafkapath>/server.properties file
 
-[hdu@c1 ~]$ ls /usr/local/kafka/kafka-logs/
-cleaner-offset-checkpoint  __consumer_offsets-24  __consumer_offsets-39  log-start-offset-checkpoint       Topic1-2
+[hdu@ch1 ~]$ ls /usr/local/kafka/kafka-logs1/
+cleaner-offset-checkpoint  __consumer_offsets-24  __consumer_offsets-39  log-start-offset-checkpoint       Topich1-2
 __consumer_offsets-0       __consumer_offsets-27  __consumer_offsets-42  meta.properties                   Topic2-0
 __consumer_offsets-12      __consumer_offsets-3   __consumer_offsets-45  recovery-point-offset-checkpoint  Topic2-1
 __consumer_offsets-15      __consumer_offsets-30  __consumer_offsets-48  replication-offset-checkpoint     Topic2-2
-__consumer_offsets-18      __consumer_offsets-33  __consumer_offsets-6   Topic1-0                          Topic3-0
-__consumer_offsets-21      __consumer_offsets-36  __consumer_offsets-9   Topic1-1                          Topic3-1
+__consumer_offsets-18      __consumer_offsets-33  __consumer_offsets-6   Topich1-0                          Topic3-0
+__consumer_offsets-21      __consumer_offsets-36  __consumer_offsets-9   Topich1-1                          Topic3-1
 
 #Topic related directories to contain the data i.e. segment files.
 Other files are
@@ -69,7 +69,7 @@ segment1-msg30651:M-30653
 
 
 #looking to timeindex log
-C:\Users\Wic10\Downloads\kafka\kafka_2.11-2.2.1\bin\windows>kafka-dump-log.bat --files C:\Users\Wic10\Downloads\Java\Kafka_Prod_Consu_for_string2\Kafka_Project\tmp\kafka-logs\Test1-0\00000000000000000000.timeindex
+C:\Users\Wich10\Downloads\kafka\kafka_2.11-2.2.1\bin\windows>kafka-dump-log.bat --files C:\Users\Wich10\Downloads\Java\Kafka_Prod_Consu_for_string2\Kafka_Project\tmp\kafka-logs1\Test1-0\00000000000000000000.timeindex
 
 
 
