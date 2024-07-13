@@ -1,4 +1,3 @@
-
 #Understanding Logs
 
 --When broker starts some files are created within kafka folder, i.e. in our case .../usr/local/kafka/kafka-logs
