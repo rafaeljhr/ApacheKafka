@@ -3,7 +3,7 @@
 --When broker starts some files are created within kafka folder, i.e. in our case .../usr/local/kafka/kafka-logs1
   as specified in <kafkapath>/server.properties file
 
-[hdu@ch1 ~]$ ls /usr/local/kafka/kafka-logs1/
+[hdu@c1 ~]$ ls /usr/local/kafka/kafka-logs1/
 cleaner-offset-checkpoint  __consumer_offsets-24  __consumer_offsets-39  log-start-offset-checkpoint       Topich1-2
 __consumer_offsets-0       __consumer_offsets-27  __consumer_offsets-42  meta.properties                   Topic2-0
 __consumer_offsets-12      __consumer_offsets-3   __consumer_offsets-45  recovery-point-offset-checkpoint  Topic2-1

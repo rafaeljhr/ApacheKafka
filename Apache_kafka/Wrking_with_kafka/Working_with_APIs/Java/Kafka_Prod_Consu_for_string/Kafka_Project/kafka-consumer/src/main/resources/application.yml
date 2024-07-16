@@ -1,3 +1,0 @@
-spring:
-  kafka:
-    bootstrap-servers: "c1:9092"

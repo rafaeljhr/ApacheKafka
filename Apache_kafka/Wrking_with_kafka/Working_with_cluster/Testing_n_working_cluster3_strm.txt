@@ -14,8 +14,8 @@ https://github.com/a0x8o/kafka/blob/master/streams/examples/src/main/java/org/ap
  setup a kafka stream application using IDE and edit 'streamConfigs' pointing to your kafka cluster
 
 #creating topic for input
-hdu@ch1:~$ kafka-topics.sh --create     --bootstrap-server ch1:9092     --replication-factor 3     --partitions 3 --topic streams-plaintext-input
-hdu@ch1:~$ kafka-topics.sh --list --bootstrap-server ch1:9092
+hdu@c1:~$ kafka-topics.sh --create     --bootstrap-server localhost:9092     --replication-factor 3     --partitions 3 --topic streams-plaintext-input
+hdu@c1:~$ kafka-topics.sh --list --bootstrap-server localhost:9092
 __consumer_offsets
 streams-plaintext-input
 topich1
@@ -26,8 +26,8 @@ topic5
 topic6
 
 #creating topic for wordcount output
-hdu@ch1:~$ kafka-topics.sh --create     --bootstrap-server ch1:9092     --replication-factor 3     --partitions 3 --topic streams-wordcount-output  --config cleanup.policy=compact 
-hdu@ch1:~$ kafka-topics.sh --list --bootstrap-server ch1:9092
+hdu@c1:~$ kafka-topics.sh --create     --bootstrap-server localhost:9092     --replication-factor 3     --partitions 3 --topic streams-wordcount-output  --config cleanup.policy=compact 
+hdu@c1:~$ kafka-topics.sh --list --bootstrap-server localhost:9092
 __consumer_offsets
 streams-plaintext-input
 streams-wordcount-output
@@ -38,7 +38,7 @@ topic4
 topic5
 topic6
 
-hdu@ch1:~$ kafka-topics.sh --bootstrap-server ch1:9092 --describe 
+hdu@c1:~$ kafka-topics.sh --bootstrap-server localhost:9092 --describe 
 Topic:topich1	PartitionCount:1	ReplicationFactor:1	Configs:segment.bytes=1073741824
 	Topic: topich1	Partition: 0	Leader: 2	Replicas: 2	Isr: 2
 Topic:topic2	PartitionCount:1	ReplicationFactor:1	Configs:segment.bytes=1073741824
@@ -72,10 +72,10 @@ kafka-run-class.sh org.apache.kafka.streams.examples.wordcount.WordCountDemo
  streams-wordcount-output.
 
 #start producer
-kafka-console-producer.sh --bootstrap-server ch1:9092 --topic streams-plaintext-input
+kafka-console-producer.sh --bootstrap-server localhost:9092 --topic streams-plaintext-input
 
 #reading from output topic
-kafka-console-consumer.sh --bootstrap-server ch1:9092 \
+kafka-console-consumer.sh --bootstrap-server localhost:9092 \
     --topic streams-wordcount-output \
     --from-beginning \
     --formatter kafka.tools.DefaultMessageFormatter \
@@ -95,14 +95,14 @@ kafka-console-consumer.sh --bootstrap-server ch1:9092 \
 #create topics
 
 #creating topic for input
-hdu@ch1:~$ kafka-topics.sh --create     --bootstrap-server ch1:9092     --replication-factor 3     --partitions 3 
+hdu@c1:~$ kafka-topics.sh --create     --bootstrap-server localhost:9092     --replication-factor 3     --partitions 3 
           --topic streams-plaintext-input
-hdu@ch1:~$ kafka-topics.sh --list --bootstrap-server ch1:9092
+hdu@c1:~$ kafka-topics.sh --list --bootstrap-server localhost:9092
 
 #creating topic for wordcount output
-hdu@ch1:~$ kafka-topics.sh --create     --bootstrap-server ch1:9092     --replication-factor 3     --partitions 3 
+hdu@c1:~$ kafka-topics.sh --create     --bootstrap-server localhost:9092     --replication-factor 3     --partitions 3 
           --topic streams-wordcount-output  --config cleanup.policy=compact 
-hdu@ch1:~$ kafka-topics.sh --list --bootstrap-server ch1:9092
+hdu@c1:~$ kafka-topics.sh --list --bootstrap-server localhost:9092
 __consumer_offsets
 streams-plaintext-input
 streams-wordcount-output
@@ -112,10 +112,10 @@ Step1: from within your cluster
      -- This starts your streaming wordcount application
 
 Step2: Start Producer
-        $kafka-console-producer.sh --broker-list ch1:9092 --topic streams-plaintext-input
+        $kafka-console-producer.sh --broker-list localhost:9092 --topic streams-plaintext-input
 
 Step 3: Start Consumer
-	$kafka-console-consumer.sh --bootstrap-server ch1:9092     --topic streams-wordcount-output     
+	$kafka-console-consumer.sh --bootstrap-server localhost:9092     --topic streams-wordcount-output     
 --from-beginning     --formatter kafka.tools.DefaultMessageFormatter     
 --property print.key=true     
 --property print.value=true     
