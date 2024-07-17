@@ -88,7 +88,8 @@ kafka-console-consumer.sh --topic Topic1 --bootstrap-server localhost:9092 --par
 [hdu@c1 ~]$ kafka-console-consumer.sh --topic Topic1 --bootstrap-server localhost:9092 --from-beginning
 
 --specifying additional properties
-[hdu@c1 ~]$ kafka-console-consumer.sh --topic Topic1 --bootstrap-server localhost:9092 --from-beginning --partition 0 --property print.offset=true --property print.timestamp=true --property print.partition=true
+[hdu@c1 ~]$ kafka-console-consumer.sh --topic Topic1 --bootstrap-server localhost:9092 --from-beginning 
+--partition 0 --property print.offset=true --property print.timestamp=true --property print.partition=true
 CreateTime:1720902529595	chicago
 CreateTime:1720902536596	newyork
 CreateTime:1720902540644	dallas
@@ -302,7 +303,7 @@ kafka-console-consumer.sh --topic Topic6 --from-beginning --bootstrap-server loc
 kafka-console-consumer.sh --topic Topic6 --from-beginning --bootstrap-server localhost:9092 --property "print.timestamp=true" --property "print.offset=true" --partition 2
 
 #looking into consumer groups
---shows last consumer group created when consumer application was launched
+#shows last consumer group created when consumer application was launched
 #creating consumer group while reading using a consumer
 hdu@c1:~$ kafka-consumer-groups.sh --bootstrap-server localhost:9092 --list
 
@@ -328,12 +329,12 @@ CreateTime:1675234118526	Partition:1	msg3
 CreateTime:1675234119543	Partition:0	msg4
 CreateTime:1675234120949	Partition:2	msg5
 
---try same command from another window
+#try same command from another window
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic Topic1 --group ApplGroup --property printrtition=true --property print.timestamp=true --property print.offset true --from-beginning
 Note** will not show anything as this consumer application now belongs to same group 'ApplGroup' and all msgs were already consumed 
 by another member (previous application) of consumer group
  
---in another terminal,to see members in group
+#in another terminal,to see members in group
 kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group ApplGroup --describe --state
 
 #start 2 more instances of same application belonging to same group and check for rebalancing and assigning of partitions
@@ -352,7 +353,7 @@ CreateTime:1675234200278	Partition:1	msg10
 ApplGroup
 777
 
---if accessing data from beginning by a new consumer appl belonging to same group
+#if accessing data from beginning by a new consumer appl belonging to same group
 kafka-consumer-groups.sh --topic Topic1 --bootstrap-server localhost:9092 --group ApplGroup --reset-offsets --to-earliest --execute
 
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic Topic1 --from-beginning --group ApplGroup
@@ -363,6 +364,49 @@ germany
 india
 bangladesh
 
---for delivery gaurantees
+#Accessing data from __consumer_offset topic
+echo "exclude.internal.topics=false" > /tmp/consumer.config
+
+kafka-console-consumer.sh --consumer.config /tmp/consumer.config \
+--formatter "kafka.coordinator.group.GroupMetadataManager\$OffsetsMessageFormatter" \
+--bootstrap-server localhost:9092 --topic __consumer_offsets --from-beginning
+
+#Other option
+kafka-run-class.sh kafka.tools.ConsoleConsumer --topic Topic1 --bootstrap-server ch1:9092 --from-beginning
+
+#connecting to zookeeper
+[hdu@ch1 ~]$ zookeeper-shell.sh ch1:2181
+
+ls /
+[cluster, controller_epoch, controller, brokers, zookeeper, admin, isr_change_notification, consumers, log_dir_event_notification, latest_producer_id_block, config]
+
+ls /brokers
+[ids, topics, seqid]
+
+ls /brokers/ids
+[0, 1, 2]
+
+ls /brokers/topics
+[Topic6, Topic4, Topic3, Topic2, Topic1, bankdata2, __consumer_offsets]
+
+ls /config
+[changes, clients, brokers, topics, users]
+
+ls /config/clients
+
+get /config/clients
+
+get /config/brokers
+
+get /config/topics
+
+get /latest_producer_id_block
+
+#useful links to know deeper about zk
+https://zookeeper.apache.org/doc/r3.2.2/zookeeperInternals.html
+https://zookeeper.apache.org/doc/r3.6.2/zookeeperProgrammers.html
+
+#for delivery gaurantees
 kafka-console-producer.sh --topic Test1 --broker-list localhost:9092 --request-required-acks 1
 kafka-console-producer.sh --topic Test1 --broker-list localhost:9092 --producer-property acks=all
+
