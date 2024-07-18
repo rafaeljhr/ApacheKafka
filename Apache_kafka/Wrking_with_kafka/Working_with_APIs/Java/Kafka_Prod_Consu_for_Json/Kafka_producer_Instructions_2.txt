@@ -1,0 +1,145 @@
+#Building your kafka-producer application
+------------------------
+
+Additional: If you would want to build producer application to send JSON messages to kafka
+
+By default in KafkaTemplate all serialization is for 'string'
+--passing JSON objects into kafka
+--To change template bindings/serializations to desired objects
+
+#when sending a JSON message
+
+--create a class 'KafkaConfig'
+--create a class 'Book'
+
+KafkaConfig.java
+-----
+package com.example.kafka.kafkaproducer;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.StringSerializer;
+import org.apache.kafka.connect.json.JsonSerializer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
+
+@Configuration
+public class KafkaConfig {	
+	
+	@Bean
+	public ProducerFactory<String, Book> producerFactory()
+	{
+		Map<String, Object> config = new HashMap<>();
+		config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
+		config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+		config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, org.springframework.kafka.support.serializer.JsonSerializer.class);
+		
+		return new DefaultKafkaProducerFactory<>(config);
+		
+	}
+	
+	@Bean
+	public KafkaTemplate<String, Book> kafkaTemplate() {
+		return new KafkaTemplate<>(producerFactory());
+	}
+
+}
+
+----- 
+Book.java
+----
+package com.example.kafka.kafkaproducer;
+
+public class Book {
+
+	private String bookname;
+	private String isbn;
+	
+	public String getBookname() {
+		return bookname;
+	}
+	public void setBookname(String bookname) {
+		this.bookname = bookname;
+	}
+	
+	public String getIsbn() {
+		return isbn;
+	}
+	public void setIsbn(String isbn) {
+		this.isbn = isbn;
+	}
+	
+	public Book(String bookname, String isbn)
+	{
+		this.bookname = bookname;
+		this.isbn = isbn;
+	}
+	
+	public Book() {
+		
+	}
+	
+} 
+
+----
+Code of ProducerController.java
+#when sending a JSON message
+
+Update ProducerController.java
+package com.example.kafka.kafkaproducer;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class ProducerController {
+	
+	@Autowired
+	KafkaTemplate<String, Book> kafkaTemplate;
+	
+	private static final String TOPIC = "topic2";
+	
+	@PostMapping("/publish")
+	public String publishMessage(@RequestBody Book book)
+	{
+		kafkaTemplate.send(TOPIC, book);
+		return "Published Successfully";  
+	}
+}
+-----
+#Test your application
+You can test from broswer/ curl command
+or install 'postman'/postman web > 
+
+do a post using Body>raw>JSON
+{"bookname":"mybook","isbn","12444"}
+
+--check if you get a message 'Published successfully'
+
+
+for example:
+C:\Users\Win10\Downloads\kafka\kafka_2.11-2.2.1\bin\windows>kafka-console-consumer.bat --topic newbook 
+--bootstrap-server localhost:9092 
+--from-beginning 
+--property value-deserializer="org.springframework.kafka.support.serializer.JsonDeserializer"
+
+#to package your application
+change snapshot version in 'pom.xml'
+right click on project > maven build
+
+--check if jar was created.
+
+These jars can be used to build our own docker images.
+
+
+
+
+
