@@ -1,0 +1,24 @@
+Log compaction is handled by the log cleaner, a pool of background threads that recopy log segment files, removing records whose key appears in the head of the log.
+
+Each compactor thread works as follows:
+It chooses the log that has the highest ratio of log head to log tail
+It creates a succinct summary of the last offset for each key in the head of the log
+It recopies the log from beginning to end removing keys which have a later occurrence in the log. New, clean segments are swapped into the log immediately so the additional disk space required is just one additional log segment (not a fully copy of the log).
+The summary of the log head is essentially just a space-compact hash table. It uses exactly 24 bytes per entry. As a result with 8GB of cleaner buffer one cleaner iteration can clean around 366GB of log head (assuming 1k messages).
+
+The log cleaner is enabled by default. 
+This will start the pool of cleaner threads. 
+
+
+Broker configuration setting defined in the broker's server.properties file
+To enable log cleaning on a particular topic > log.cleanup.policy=compact
+
+The log cleaner can be configured to retain a minimum amount of the uncompacted "head" of the log.
+log.cleaner.min.compaction.lag.ms
+
+This can be used to prevent messages newer than a minimum message age from being subject to compaction. If not set, all log segments are eligible for compaction except for the last segment, i.e. the one currently being written to. The active segment will not be compacted even if all of its messages are older than the minimum compaction time lag. The log cleaner can be configured to ensure a maximum delay after which the uncompacted "head" of the log becomes eligible for log compaction.
+
+log.cleaner.max.compaction.lag.ms
+
+This can be used to prevent log with low produce rate from remaining ineligible for compaction for an unbounded duration. If not set, logs that do not exceed min.cleanable.dirty.ratio are not compacted. Note that this compaction deadline is not a hard guarantee since it is still subjected to the availability of log cleaner threads and the actual compaction time. You will want to monitor the uncleanable-partitions-count, max-clean-time-secs and max-compaction-delay-secs metrics.
+
