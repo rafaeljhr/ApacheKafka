@@ -1,4 +1,4 @@
-
+'docker-compose' is now 'docker compose'
 
 Install kafka cluster using Docker & Docker-compose [wurstmeister kafka,zookeeper image]
 -------------------

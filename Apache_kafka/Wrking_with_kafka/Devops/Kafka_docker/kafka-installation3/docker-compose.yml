@@ -1,6 +1,6 @@
 #To be fixed..(kafka-servers crash, zk-servers run fine)
 #
-version: '3'
+#version: '3'
 services:
   zookeeper-1:
     image: wurstmeister/zookeeper

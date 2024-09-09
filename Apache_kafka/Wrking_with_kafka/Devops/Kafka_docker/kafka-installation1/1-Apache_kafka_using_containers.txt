@@ -1,3 +1,10 @@
+Note**
+
+with newer version commands changed
+'docker-compose' is now 'docker compose'
+
+
+
 Install kafka using Docker & Docker-compose
 -------------------
 --Allows us to run kafka on any OS
@@ -33,16 +40,25 @@ docker pull wurstmeister/kafka
 
 --contents of 'docker-compose.yml' as provided in 'kafka-installation1'
 
+
 #to pull images and start the container
 $docker-compose -f docker-compose.yml up
+
+--newer version
+$docker compose -f docker-compose.yml up
 
 #to run containers in background
 $docker-compose -f docker-compose.yml up -d
 
---refer sample_run_out1.txt as provided in 'kafka-installation1'
+--newer version
+$docker compose -f docker-compose.yml up -d
+
+$docker container ls
 
 #to look at containers running
-$docker-compose ps
+$docker compose ps
+
+--refer sample_run_out1.txt as provided in 'kafka-installation1'
 
 #to look at all images
 $docker images
