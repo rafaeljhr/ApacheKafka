@@ -70,6 +70,7 @@ syncLimit=2
 server.1=localhost:2888:3888
 server.2=localhost:2889:3889
 server.3=localhost:2890:3890
+4lw.commands.whitelist=*
 
 --zookeeper2.properties
 # the directory where the snapshot is stored.
@@ -85,6 +86,7 @@ syncLimit=2
 server.1=localhost:2888:3888
 server.2=localhost:2889:3889
 server.3=localhost:2890:3890
+4lw.commands.whitelist=*
 
 --zookeeper3.properties
 # the directory where the snapshot is stored.
@@ -100,6 +102,7 @@ syncLimit=2
 server.1=localhost:2888:3888
 server.2=localhost:2889:3889
 server.3=localhost:2890:3890
+4lw.commands.whitelist=*
 
 #since zookeeper's data path is /tmp/zookeeper*
 
