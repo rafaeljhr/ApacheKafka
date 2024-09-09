@@ -1,7 +1,7 @@
 #!/bin/bash
-mkdir -p /usr/local/zookeeper/state/zookeeper
-echo 1 > /usr/local/zookeeper/state/zookeeper/myid
-mkdir -p /usr/local/kafka/kafka-logs
+mkdir -p /tmp/zookeeper
+echo 1 > /tmp/zookeeper/myid
+mkdir -p /tmp/kafka-logs
 
 zookeeper-3.4.6/bin/zkServer.sh start
 sleep 5
