@@ -1,3 +1,6 @@
+#Setup Kafka on Windows
+---------------
+
 Download kafka from archive.apache.org and unzip/untar it 
 
 For example: kafka_2.11-2.2.1 

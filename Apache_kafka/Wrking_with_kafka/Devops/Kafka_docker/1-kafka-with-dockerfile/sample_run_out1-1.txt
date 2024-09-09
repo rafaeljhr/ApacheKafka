@@ -1,3 +1,4 @@
+--sample output--
 root@m1:~/kafka-installation5# vi DockerFile
 root@m1:~/kafka-installation5# vi start.sh
 root@m1:~/kafka-installation5# chmod -R 755 start.sh 

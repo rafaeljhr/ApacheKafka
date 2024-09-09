@@ -6,26 +6,13 @@ $docker pull openjdk
 
 $docker images
 
-$mkdir kafka-installation5
+$mkdir 1-kafka-with-dockerfile
 
-$cd kafka-installation5
-
-$vi Dockerfile
-
----
-as provided in 'kafka-installation5'
-
----
-
-$vi start.sh
-
----
-as provided in 'kafka-installation5'
-
----
+$cd 1-kafka-with-dockerfile
 
 $chmod -R 755 start.sh
 
+--from within directory
 #Build your image
 $docker build . -t kafka:2.11-2.2.1
 
@@ -42,7 +29,7 @@ $docker logs -f kafka-broker
 #get into container to work with kafka
 $docker exec -it kafka-broker /bin/bash
 
-#rest refer sample_run_out5-1.txt
+#rest refer sample_run_out-1.txt
 
 # we can also run commands as temporary container , linked with existing kafka container
 
@@ -57,9 +44,8 @@ bin/kafka-topics.sh --create --bootstrap-server kafka-broker:9092
 $docker run --rm -it --link kafka-broker --name temp1 kafka:2.11-2.2.1 
 bin/kafka-topics.sh --list --bootstrap-server kafka-broker:9092 
 
-Similarly we can run producer and consumer
+Similarly we can run producer and consumer using same image
 
-#rest refer sample_run_out5-1.txt
-
+#rest refer sample_run_out-1.txt
 
 #Note**: Here the container which runs has kafka and zookeeper processes running within same container
