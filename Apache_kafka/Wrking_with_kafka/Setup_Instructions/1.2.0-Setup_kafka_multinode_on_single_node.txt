@@ -57,34 +57,49 @@ cd sncluster
 
 #edit zookeeper properties
 --zookeeper1.properties
-        tickTime=2000
-        dataDir=/tmp/zookeeper1
-        clientPort=2181
-        initLimit=5
-        syncLimit=2
-        server.1=ch1:2888:3888
-        server.2=ch1:2888:3888
-        server.3=ch1:2888:3888
+# the directory where the snapshot is stored.
+#dataDir=/tmp/zookeeper
+# the port at which the clients will connect
+clientPort=2181
+# disable the per-ip limit on the number of connections since this is a non-production config
+maxClientCnxns=0
+tickTime=2000
+dataDir=/tmp/zookeeper1
+initLimit=5
+syncLimit=2
+server.1=localhost:2888:3888
+server.2=localhost:2889:3889
+server.3=localhost:2890:3890
 
 --zookeeper2.properties
-        tickTime=2000
-        dataDir=/tmp/zookeeper2
-        clientPort=2182
-        initLimit=5
-        syncLimit=2
-        server.1=ch1:2888:3888
-        server.2=ch1:2888:3888
-        server.3=ch1:2888:3888
+# the directory where the snapshot is stored.
+#dataDir=/tmp/zookeeper
+# the port at which the clients will connect
+clientPort=2182
+# disable the per-ip limit on the number of connections since this is a non-production config
+maxClientCnxns=0
+tickTime=2000
+dataDir=/tmp/zookeeper2
+initLimit=5
+syncLimit=2
+server.1=localhost:2888:3888
+server.2=localhost:2889:3889
+server.3=localhost:2890:3890
 
 --zookeeper3.properties
-        tickTime=2000
-        dataDir=/tmp/zookeeper3
-        clientPort=2183
-        initLimit=5
-        syncLimit=2
-        server.1=ch1:2888:3888
-        server.2=ch1:2888:3888
-        server.3=ch1:2888:3888
+# the directory where the snapshot is stored.
+#dataDir=/tmp/zookeeper
+# the port at which the clients will connect
+clientPort=2183
+# disable the per-ip limit on the number of connections since this is a non-production config
+maxClientCnxns=0
+tickTime=2000
+dataDir=/tmp/zookeeper3
+initLimit=5
+syncLimit=2
+server.1=localhost:2888:3888
+server.2=localhost:2889:3889
+server.3=localhost:2890:3890
 
 #since zookeeper's data path is /tmp/zookeeper*
 
@@ -99,27 +114,27 @@ echo 3 > /tmp/zookeeper3/myid
 #edit server.properties for kafka
 --server1.properties
 broker.id=0
-listeners=PLAINTEXT://ch1:9092
+listeners=PLAINTEXT://localhost:9092
 log.dirs=/tmp/kafka-logs1
-zookeeper.connect=ch1:2181,ch1:2182,ch1:2183
+zookeeper.connect=localhost:2181,localhost:2182,localhost:2183
 
 --server2.properties
 broker.id=1
-listeners=PLAINTEXT://ch1:9093
+listeners=PLAINTEXT://localhost:9093
 log.dirs=/tmp/kafka-logs2
-zookeeper.connect=ch1:2181,ch1:2182,ch1:2183
+zookeeper.connect=localhost:2181,localhost:2182,localhost:2183
 
 --server3.properties
 broker.id=2
-listeners=PLAINTEXT://ch1:9093
+listeners=PLAINTEXT://localhost:9094
 log.dirs=/tmp/kafka-logs3
-zookeeper.connect=ch1:2181,ch1:2182,ch1:2183
+zookeeper.connect=localhost:2181,localhost:2182,localhost:2183
 
 cd
 
-#we can use provided script 'kafka-clus.sh' to start the kafka cluster and test it.
+#we can use provided script '1.2.1-setup-kafka-clus.sh' to start the kafka cluster and test it.
 #make sure the script has 777 (executable) permissions given.
-./kafka-clus.sh
+./1.2.1-setup-kafka-clus.sh
 
 
 
