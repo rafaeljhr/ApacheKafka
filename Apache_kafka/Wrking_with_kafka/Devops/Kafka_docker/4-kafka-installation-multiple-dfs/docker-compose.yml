@@ -2,9 +2,9 @@ version: '3'
 
 services:
         kafka-cl1:
-           build: kafka-installation5
+           build: kafka-installationA
            container_name: kafkacl1
 
         kafka-cl2:
-           build: kafka-installation6
+           build: kafka-installationB
            container_name: kafkacl2
